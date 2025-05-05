@@ -1410,115 +1410,120 @@
     },
 
     "groups": {
-	
-	
-	"TH_TIMEOUT_SETTING": [
-        "TH_TIMEOUT_SPELLCARD1",
-        "TH_TIMEOUT_SPELLCARD2"
-      ],
-      "TH_STAGE_SELECT": [
-        "TH_STAGE_1",
-        "TH_STAGE_2",
-        "TH_STAGE_3",
-        "TH_STAGE_4",
-        "TH_STAGE_5",
-        "TH_STAGE_6",
-        "TH_STAGE_EXTRA"
-      ],
-      "TH_STAGE_SELECT_NOEX": [
-        "TH_STAGE_1",
-        "TH_STAGE_2",
-        "TH_STAGE_3",
-        "TH_STAGE_4",
-        "TH_STAGE_5",
-        "TH_STAGE_6"
-      ],
-      "TH_MODE_SELECT": [
-        "TH_ORIGINAL",
-        "TH_ENHANCED"
-      ],
-      "TH_WARP_SELECT": [
-        "TH_NONE",
-        "TH_STAGE_PORTION",
-        "TH_MID_STAGE",
-        "TH_END_STAGE",
-        "TH_NONSPELL",
-        "TH_SPELL"
-      ],
-      "TH_WARP_SELECT_FRAME": [
-        "TH_NONE",
-        "TH_STAGE_PORTION",
-        "TH_MID_STAGE",
-        "TH_END_STAGE",
-        "TH_NONSPELL",
-        "TH_SPELL",
-        "TH_FRAME"
-      ],
-      "TH_WARP_ALCOSTG": [
-        "TH_NONE",
-        "TH_STAGE_PORTION",
-        "TH_END_STAGE"
-      ],
-      "TH_SPELL_PHASE1": [
-        "TH_NORMAL",
-        "TH_RAGE"
-      ],
-	  "TH_BOOKS_PHASE_INF_TIME": [
-        "TH_SPELL_TIME_NORMAL",
-        "TH_SPELL_TIME_INF_BOOK6",
-        "TH_SPELL_TIME_INF_BOOK5",
-		"TH_SPELL_TIME_INF_BOOK5_2",
-		"TH_SPELL_TIME_INF_BOOK_CUSTOM"
-      ],
-	  "TH_EOSD_SAKUYA_DOLLS": [
-        "TH_EOSD_SAKUYA_DOLLS_MORE_BLUE_TO_GREEN",
-        "TH_EOSD_SAKUYA_DOLLS_MORE_RED_TO_GREEN",
-        "TH_EOSD_SAKUYA_DOLLS_HALF_HALF",
-        "TH_EOSD_SAKUYA_DOLLS_RANDOM"
-      ],
-	  "TH_PHASE_INF_TIME": [
-        "TH_SPELL_TIME_NORMAL",
-        "TH_SPELL_TIME_INF"
-      ],
-	  "TH_STAGE_SKIP_HALF": [
-        "TH_NORMAL",
-        "TH_SKIP_HALF"
-      ],
-	  "TH_PHASE_INF_MODE": [
-        "TH_SPELL_TIME_NORMAL",
-        "TH_SPELL_TIME_INF_MODE"
-      ],
-	  "TH_PHASE_INF_MODE_TH15_LASERS": [
-        "TH_SPELL_TIME_NORMAL",
-        "TH_SPELL_TIME_INF_MODE_Y",
-        "TH_SPELL_TIME_INF_MODE_G",
-		"TH_SPELL_TIME_NORMAL_G"
-      ],
-      "TH_SPELL_PHASE2": [
-        "TH_P1",
-        "TH_P2",
-        "TH_P3",
-        "TH_P4"
-      ],
-      "TH_SPELL_PHASE3": [
-        "TH_P1",
-        "TH_P2",
-        "TH_P3",
-        "TH_P4",
-        "TH_RAGE"
-      ],
-	  "TH_SPELL_PHASE4": [
-        "TH_P1",
-        "TH_P2",
-        "TH_P3",
-        "TH_P4",
-        "TH_P5",
-        "TH_RAGE"
-      ],
-      "TH_SIDE_SELECT": [
-          "TH_LEFT",
-          "TH_RIGHT"
-      ]
+
+
+        "TH_TIMEOUT_SETTING": [
+            "TH_TIMEOUT_SPELLCARD1",
+            "TH_TIMEOUT_SPELLCARD2"
+        ],
+        "TH_STAGE_SELECT": [
+            "TH_STAGE_1",
+            "TH_STAGE_2",
+            "TH_STAGE_3",
+            "TH_STAGE_4",
+            "TH_STAGE_5",
+            "TH_STAGE_6",
+            "TH_STAGE_EXTRA"
+        ],
+        "TH_STAGE_SELECT_NOEX": [
+            "TH_STAGE_1",
+            "TH_STAGE_2",
+            "TH_STAGE_3",
+            "TH_STAGE_4",
+            "TH_STAGE_5",
+            "TH_STAGE_6"
+        ],
+        "TH_STAGE_SELECT_TRIAL": [
+            "TH_STAGE_1",
+            "TH_STAGE_2",
+            "TH_STAGE_3"
+        ],
+        "TH_MODE_SELECT": [
+            "TH_ORIGINAL",
+            "TH_ENHANCED"
+        ],
+        "TH_WARP_SELECT": [
+            "TH_NONE",
+            "TH_STAGE_PORTION",
+            "TH_MID_STAGE",
+            "TH_END_STAGE",
+            "TH_NONSPELL",
+            "TH_SPELL"
+        ],
+        "TH_WARP_SELECT_FRAME": [
+            "TH_NONE",
+            "TH_STAGE_PORTION",
+            "TH_MID_STAGE",
+            "TH_END_STAGE",
+            "TH_NONSPELL",
+            "TH_SPELL",
+            "TH_FRAME"
+        ],
+        "TH_WARP_ALCOSTG": [
+            "TH_NONE",
+            "TH_STAGE_PORTION",
+            "TH_END_STAGE"
+        ],
+        "TH_SPELL_PHASE1": [
+            "TH_NORMAL",
+            "TH_RAGE"
+        ],
+        "TH_BOOKS_PHASE_INF_TIME": [
+            "TH_SPELL_TIME_NORMAL",
+            "TH_SPELL_TIME_INF_BOOK6",
+            "TH_SPELL_TIME_INF_BOOK5",
+            "TH_SPELL_TIME_INF_BOOK5_2",
+            "TH_SPELL_TIME_INF_BOOK_CUSTOM"
+        ],
+        "TH_EOSD_SAKUYA_DOLLS": [
+            "TH_EOSD_SAKUYA_DOLLS_MORE_BLUE_TO_GREEN",
+            "TH_EOSD_SAKUYA_DOLLS_MORE_RED_TO_GREEN",
+            "TH_EOSD_SAKUYA_DOLLS_HALF_HALF",
+            "TH_EOSD_SAKUYA_DOLLS_RANDOM"
+        ],
+        "TH_PHASE_INF_TIME": [
+            "TH_SPELL_TIME_NORMAL",
+            "TH_SPELL_TIME_INF"
+        ],
+        "TH_STAGE_SKIP_HALF": [
+            "TH_NORMAL",
+            "TH_SKIP_HALF"
+        ],
+        "TH_PHASE_INF_MODE": [
+            "TH_SPELL_TIME_NORMAL",
+            "TH_SPELL_TIME_INF_MODE"
+        ],
+        "TH_PHASE_INF_MODE_TH15_LASERS": [
+            "TH_SPELL_TIME_NORMAL",
+            "TH_SPELL_TIME_INF_MODE_Y",
+            "TH_SPELL_TIME_INF_MODE_G",
+            "TH_SPELL_TIME_NORMAL_G"
+        ],
+        "TH_SPELL_PHASE2": [
+            "TH_P1",
+            "TH_P2",
+            "TH_P3",
+            "TH_P4"
+        ],
+        "TH_SPELL_PHASE3": [
+            "TH_P1",
+            "TH_P2",
+            "TH_P3",
+            "TH_P4",
+            "TH_RAGE"
+        ],
+        "TH_SPELL_PHASE4": [
+            "TH_P1",
+            "TH_P2",
+            "TH_P3",
+            "TH_P4",
+            "TH_P5",
+            "TH_RAGE"
+        ],
+        "TH_SIDE_SELECT": [
+            "TH_LEFT",
+            "TH_RIGHT"
+        ]
     }
   },
 

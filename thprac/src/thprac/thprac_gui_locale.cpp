@@ -438,6 +438,7 @@ static const ImWchar __thprac_loc_range_ChineseFull[] = {
             0, 0, 0, 0,
             info.font_name);
     }
+    /*
     ImWchar* GetGlyphRange(int locale)
     {
         bool onlyRenderUsedFont = false;
@@ -495,6 +496,38 @@ static const ImWchar __thprac_loc_range_ChineseFull[] = {
         }
         return glyphRange;
     }
+    */
+    ImWchar* GetGlyphRange(int locale)
+    {
+        auto& io = ImGui::GetIO();
+        ImWchar* glyphRange = nullptr;
+        switch (locale) {
+        case LOCALE_ZH_CN:
+            glyphRange = (ImWchar*)io.Fonts->GetGlyphRangesChineseFull();
+            break;
+        case LOCALE_EN_US:
+            glyphRange = (ImWchar*)io.Fonts->GetGlyphRangesDefault();
+            break;
+        case LOCALE_JA_JP: {
+            if (!__glocale_jp_glyphrange) {
+                __glocale_jp_glyphrange = (ImWchar*)malloc((_countof(baseUnicodeRanges) + _countof(offsetsFrom0x4E00) * 2 + 1) * sizeof(ImWchar));
+                // Unpack
+                int codepoint = 0x4e00;
+                memcpy(__glocale_jp_glyphrange, baseUnicodeRanges, sizeof(baseUnicodeRanges));
+                ImWchar* dst = __glocale_jp_glyphrange + _countof(baseUnicodeRanges);
+                for (int n = 0; n < _countof(offsetsFrom0x4E00); n++, dst += 2) {
+                    dst[0] = dst[1] = (ImWchar)(codepoint += (offsetsFrom0x4E00[n] + 1));
+                }
+                dst[0] = 0;
+            }
+        }
+            glyphRange = (ImWchar*)__glocale_jp_glyphrange;
+            break;
+        default:
+            break;
+        }
+        return glyphRange;
+    }
     typedef HFONT(CALLBACK* font_checker)(HDC hdc, font_info& info);
     font_checker fontCheckers[] = {
         CheckFontZh,
@@ -502,11 +535,13 @@ static const ImWchar __thprac_loc_range_ChineseFull[] = {
         CheckFontJa,
     };
 
+    /*
     static const wchar_t* __glocale_glyph_range[] = {
         __thprac_loc_range_zh,
         __thprac_loc_range_en,
         __thprac_loc_range_ja
     };
+    */
     static ImFont* __glocale_fonts[3] {};
     void LocaleFontWarning()
     {

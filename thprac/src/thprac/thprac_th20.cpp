@@ -13,11 +13,11 @@ namespace TH20 {
 
         int64_t score;
         int32_t life;
+        int32_t life_fragment;
         int32_t bomb;
         int32_t bomb_fragment;
         int32_t power;
         int32_t value;
-        int32_t graze;
         bool dlg;
 
         bool _playLock = false;
@@ -38,11 +38,11 @@ namespace TH20 {
 
             GetJsonValue(score);
             GetJsonValue(life);
+            GetJsonValue(life_fragment);
             GetJsonValue(bomb);
             GetJsonValue(bomb_fragment);
             GetJsonValue(power);
             GetJsonValue(value);
-            GetJsonValue(graze);
 
             return true;
         }
@@ -64,11 +64,11 @@ namespace TH20 {
 
                 AddJsonValue(score);
                 AddJsonValue(life);
+                AddJsonValue(life_fragment);
                 AddJsonValue(bomb);
                 AddJsonValue(bomb_fragment);
                 AddJsonValue(power);
                 AddJsonValue(value);
-                AddJsonValue(graze);
 
                 ReturnJson();
             } 
@@ -103,7 +103,7 @@ namespace TH20 {
             case 0:
                 break;
             case 1:
-                mDiffculty = *((int32_t*)0x49f274);
+                //mDiffculty = *((int32_t*)0x49f274);
                 SetFade(0.8f, 0.1f);
                 Open();
                 thPracParam.Reset();
@@ -123,11 +123,11 @@ namespace TH20 {
 
                 thPracParam.score = *mScore;
                 thPracParam.life = *mLife;
+                thPracParam.life_fragment = *mLifeFragment;
                 thPracParam.bomb = *mBomb;
                 thPracParam.bomb_fragment = *mBombFragment;
                 thPracParam.power = *mPower;
                 thPracParam.value = *mValue;
-                thPracParam.graze = *mGraze;
                 break;
             case 4:
                 Close();
@@ -183,6 +183,7 @@ namespace TH20 {
             if (mStage())
                 *mSection = *mChapter = 0;
             if (*mMode == 1) {
+                /*
                 int mbs = -1;
                 if (*mStage == 5) { // Counting from 0
                     mbs = 2;
@@ -195,15 +196,16 @@ namespace TH20 {
                     SectionWidget();
                     mPhase(TH_PHASE, SpellPhase());
                 }
+                */
 
                 mLife();
+                mLifeFragment();
                 mBomb();
                 mBombFragment();
                 auto power_str = std::to_string((float)(*mPower) / 100.0f).substr(0, 4);
                 mPower(power_str.c_str());
-                mValue();
-                mValue.RoundDown(10);
-                mGraze();
+                //mValue();
+                //mValue.RoundDown(10);
                 mScore();
                 mScore.RoundDown(10);
             }
@@ -286,7 +288,7 @@ namespace TH20 {
         }
 
         Gui::GuiCombo mMode { TH_MODE, TH_MODE_SELECT };
-        Gui::GuiCombo mStage { TH_STAGE, TH_STAGE_SELECT };
+        Gui::GuiCombo mStage { TH_STAGE, TH_STAGE_SELECT_TRIAL };
         Gui::GuiCombo mWarp { TH_WARP, TH_WARP_SELECT };
         Gui::GuiCombo mSection { TH_MODE };
         Gui::GuiCombo mPhase { TH_PHASE };
@@ -295,8 +297,9 @@ namespace TH20 {
         Gui::GuiSlider<int, ImGuiDataType_S32> mChapter { TH_CHAPTER, 0, 0 };
         Gui::GuiDrag<int64_t, ImGuiDataType_S64> mScore { TH_SCORE, 0, 9999999990, 10, 100000000 };
         Gui::GuiSlider<int, ImGuiDataType_S32> mLife { TH_LIFE, 0, 9 };
+        Gui::GuiSlider<int, ImGuiDataType_S32> mLifeFragment { TH_LIFE_FRAGMENT, 0, 2 };
         Gui::GuiSlider<int, ImGuiDataType_S32> mBomb { TH_BOMB, 0, 9 };
-        Gui::GuiSlider<int, ImGuiDataType_S32> mBombFragment { TH_BOMB_FRAGMENT, 0, 4 };
+        Gui::GuiSlider<int, ImGuiDataType_S32> mBombFragment { TH_BOMB_FRAGMENT, 0, 2 };
         Gui::GuiSlider<int, ImGuiDataType_S32> mPower { TH_POWER, 100, 400 };
         Gui::GuiDrag<int, ImGuiDataType_S32> mValue { TH_VALUE, 0, 999990, 10, 100000 };
         Gui::GuiDrag<int, ImGuiDataType_S32> mGraze { TH_GRAZE, 0, 999999, 1, 100000 };
@@ -527,20 +530,22 @@ namespace TH20 {
         }
         void FpsInit()
         {
-            // if (*(uint8_t*)0x4c12c9 == 3) {
-            //     mOptCtx.fps_status = 1;
-            // 
-            //     DWORD oldProtect;
-            //     VirtualProtect((void*)0x45acc1, 4, PAGE_EXECUTE_READWRITE, &oldProtect);
-            //     *(double**)0x45acc1 = &mOptCtx.fps_dbl;
-            //     VirtualProtect((void*)0x45acc1, 4, oldProtect, &oldProtect);
-            // } else
-            //     mOptCtx.fps_status = 0;
+            mOptCtx.fps_dbl = 60.0;
+
+            if (*(uint8_t*)RVA(0x1C2F99) == 3) {
+                mOptCtx.fps_status = 1;
+            
+                DWORD oldProtect;
+                VirtualProtect((void*)RVA(0x1A22F), 4, PAGE_EXECUTE_READWRITE, &oldProtect);
+                *(double**)RVA(0x1A22F) = &mOptCtx.fps_dbl;
+                VirtualProtect((void*)RVA(0x1A22F), 4, oldProtect, &oldProtect);
+            } else
+                mOptCtx.fps_status = 0;
         }
         void FpsSet()
         {
             if (mOptCtx.fps_status == 1) {
-                mOptCtx.fps_dbl = 1.0 / (double)mOptCtx.fps;
+                mOptCtx.fps_dbl = (double)mOptCtx.fps;
             }
         }
         void GameplayInit()
@@ -623,11 +628,11 @@ namespace TH20 {
             ImGui::Separator();
             ImGui::BeginChild("Adv. Options", ImVec2(0.0f, 0.0f));
 
-            // if (BeginOptGroup<TH_GAME_SPEED>()) {
-            //     if (GameFPSOpt(mOptCtx))
-            //         FpsSet();
-            //     EndOptGroup();
-            // }
+            if (BeginOptGroup<TH_GAME_SPEED>()) {
+                if (GameFPSOpt(mOptCtx))
+                    FpsSet();
+                EndOptGroup();
+            }
             if (BeginOptGroup<TH_GAMEPLAY>()) {
                 DisableKeyOpt();
                 // KeyHUDOpt();
@@ -906,23 +911,46 @@ namespace TH20 {
     //     thPracParam.Reset();
     //     thSubSeasonB = -1;
     // }
-    // EHOOK_DY(th20_prac_menu_1, 0x450f60)
-    // {
-    //     THGuiPrac::singleton().State(1);
-    // }
-    // EHOOK_DY(th20_prac_menu_2, 0x450f83)
-    // {
-    //     THGuiPrac::singleton().State(2);
-    // }
-    // EHOOK_DY(th20_prac_menu_3, 0x4512cc)
-    // {
-    //     THGuiPrac::singleton().State(3);
-    // }
-    // EHOOK_DY(th20_prac_menu_4, 0x45136d)
-    // {
-    //     THGuiPrac::singleton().State(4);
-    // }
-    // PATCH_DY(th20_prac_menu_enter_1, 0x451044, "\xeb", 1);
+
+    static bool sGameStarted;
+    EHOOK_DY(th20_prac_menu_1, 0x12A92A)
+    {
+        sGameStarted = false;
+        THGuiPrac::singleton().State(1);
+    }
+    EHOOK_DY(th20_prac_menu_2, 0x12A958)
+    {
+        if (!sGameStarted) {
+            if (Gui::InGameInputGetConfirm()) {
+                sGameStarted = true;
+                asm_call_rel<0x238C0, Thiscall>(*(uint32_t*)RVA(0x1C3DB4) + 0x154, 0);
+                THGuiPrac::singleton().State(3);
+            } else {
+                THGuiPrac::singleton().State(2);
+                pCtx->Eip = RVA(0x12AC10);
+            }
+        }
+    }
+    EHOOK_DY(th20_disable_game_start, 0x12AADA)
+    {
+        if (THGuiPrac::singleton().IsOpen())
+            pCtx->Eip = RVA(0x12AC10);
+    }
+    EHOOK_DY(th20_prac_menu_set_stage, 0x12AB34)
+    {
+        *(int*)pCtx->Esp = thPracParam.stage + 1;
+    }
+
+    /*
+    EHOOK_DY(th20_prac_menu_3, 0x122FD4)
+    {
+        THGuiPrac::singleton().State(3);
+    }
+    EHOOK_DY(th20_prac_menu_4, 0x123256)
+    {
+        THGuiPrac::singleton().State(4);
+    }
+    */
     // EHOOK_DY(th20_prac_menu_enter_2, 0x451327)
     // {
     //     // Change sub-season to dog days if playing extra
@@ -937,20 +965,22 @@ namespace TH20 {
     // {
     //     pCtx->Eip = 0x45150e;
     // }
-    // EHOOK_DY(th20_patch_main, 0x42d1ec)
-    // {
-    //     if (thPracParam.mode == 1) {
-    //         *(int32_t*)(0x4a57b0) = (int32_t)(thPracParam.score / 10);
-    //         *(int32_t*)(0x4a57f4) = thPracParam.life;
-    //         *(int32_t*)(0x4a5800) = thPracParam.bomb;
-    //         *(int32_t*)(0x4a5804) = thPracParam.bomb_fragment;
-    //         *(int32_t*)(0x4a57e4) = thPracParam.power;
-    //         *(int32_t*)(0x4a57d8) = thPracParam.value * 100;
-    //         *(int32_t*)(0x4a57c0) = thPracParam.graze;
-    //         THSectionPatch();
-    //     }
-    //     thPracParam._playLock = true;
-    // }
+    EHOOK_DY(th20_patch_main, 0xBCF34)
+    {
+        if (thPracParam.mode == 1) {
+            *(int32_t*)RVA(0x1B8670) = (int32_t)(thPracParam.score / 10);
+            *(int32_t*)RVA(0x1B8728) = thPracParam.life;
+            *(int32_t*)RVA(0x1B8730) = thPracParam.life_fragment;
+            *(int32_t*)RVA(0x1B873C) = thPracParam.bomb;
+            *(int32_t*)RVA(0x1B8740) = thPracParam.bomb_fragment;
+            *(int32_t*)RVA(0x1B86A0) = thPracParam.power;
+            //*(int32_t*)(0x4a57d8) = thPracParam.value * 100;
+
+            // not working yet
+            //THSectionPatch();
+        }
+        thPracParam._playLock = true;
+    }
     // EHOOK_DY(th20_bgm, 0x42de8c)
     // {
     //     if (THBGMTest()) {
@@ -987,7 +1017,7 @@ namespace TH20 {
         // GameGuiBegin(IMPL_WIN32_DX9, true);
     
         // Gui components update
-        // THGuiPrac::singleton().Update();
+        THGuiPrac::singleton().Update();
         // THGuiRep::singleton().Update();
         THOverlay::singleton().Update();
         // TH16InGameInfo::singleton().Update();
@@ -1038,11 +1068,11 @@ namespace TH20 {
     {
         // Init
         GameGuiInit(IMPL_WIN32_DX9, RVA2(0x5C2D58), RVA2(0x5B47D8), RVA2(0x41D650),
-            Gui::INGAGME_INPUT_GEN2, GetMemContent(RVA2(0x5B6918)) + 0x30, GetMemContent(RVA2(0x5B6918)) + 0x40, 0,
+            Gui::INGAGME_INPUT_GEN2, GetMemContent(RVA2(0x5B6918)) + 0x40, GetMemContent(RVA2(0x5B6918)) + 0x38, 0,
             -2, *(float*)RVA2(0x5B6898), 0.0f);
 
         // Gui components creation
-        // THGuiPrac::singleton();
+        THGuiPrac::singleton();
         // THGuiRep::singleton();
         THOverlay::singleton();
         // TH16InGameInfo::singleton();
@@ -1079,6 +1109,8 @@ namespace TH20 {
     }
     HOOKSET_ENDDEF()
 }
+
+bool TH20::THMainHook::sGameStarted = false;
 
 void TH20Init()
 {
