@@ -10111,7 +10111,17 @@
     "namespace": "TH20",
 
     "glossary": {
-      "TH20_PH": [ "D", "D", "D" ]
+      "TH20_PH": [ "D", "D", "D" ],
+      "TH20_HYPER": [ "", "Hyper", "" ],
+      "TH20_SUMMON_GAUGE": [ "", "Summon", "" ],
+      "TH20_SUMMON_LEVEL_R": [ "", "LevelR", "" ],
+      "TH20_SUMMON_PRIORITY_R": [ "", "PriorityR", "" ],
+      "TH20_SUMMON_LEVEL_B": [ "", "LevelB", "" ],
+      "TH20_SUMMON_PRIORITY_B": [ "", "PriorityB", "" ],
+      "TH20_SUMMON_LEVEL_Y": [ "", "LevelY", "" ],
+      "TH20_SUMMON_PRIORITY_Y": [ "", "PriorityY", "" ],
+      "TH20_SUMMON_LEVEL_G": [ "", "LevelG", "" ],
+      "TH20_SUMMON_PRIORITY_G": [ "", "PriorityG", "" ]
     },
 
     "sections": {

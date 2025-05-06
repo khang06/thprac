@@ -2,6 +2,9 @@
 #include "thprac_utils.h"
 #include <format>
 
+// WTF Microsoft
+#undef hyper
+
 namespace THPrac {
 namespace TH20 {
     using std::pair;
@@ -18,6 +21,18 @@ namespace TH20 {
         int32_t bomb_fragment;
         int32_t power;
         int32_t value;
+
+        float hyper;
+        float summon;
+        int32_t levelR;
+        int32_t priorityR;
+        int32_t levelB;
+        int32_t priorityB;
+        int32_t levelY;
+        int32_t priorityY;
+        int32_t levelG;
+        int32_t priorityG;
+
         bool dlg;
 
         bool _playLock = false;
@@ -43,6 +58,17 @@ namespace TH20 {
             GetJsonValue(bomb_fragment);
             GetJsonValue(power);
             GetJsonValue(value);
+
+            GetJsonValue(hyper);
+            GetJsonValue(summon);
+            GetJsonValue(levelR);
+            GetJsonValue(priorityR);
+            GetJsonValue(levelB);
+            GetJsonValue(priorityB);
+            GetJsonValue(levelY);
+            GetJsonValue(priorityY);
+            GetJsonValue(levelG);
+            GetJsonValue(priorityG);
 
             return true;
         }
@@ -70,6 +96,17 @@ namespace TH20 {
                 AddJsonValue(power);
                 AddJsonValue(value);
 
+                AddJsonValue(hyper);
+                AddJsonValue(summon);
+                AddJsonValue(levelR);
+                AddJsonValue(priorityR);
+                AddJsonValue(levelB);
+                AddJsonValue(priorityB);
+                AddJsonValue(levelY);
+                AddJsonValue(priorityY);
+                AddJsonValue(levelG);
+                AddJsonValue(priorityG);
+
                 ReturnJson();
             } 
 
@@ -88,6 +125,10 @@ namespace TH20 {
             *mBomb = 9;
             *mPower = 400;
             *mValue = 0;
+            *mLevelR = 1;
+            *mLevelB = 1;
+            *mLevelY = 1;
+            *mLevelG = 1;
 
             SetFade(0.8f, 0.1f);
             SetStyle(ImGuiStyleVar_WindowRounding, 0.0f);
@@ -128,10 +169,20 @@ namespace TH20 {
                 thPracParam.bomb_fragment = *mBombFragment;
                 thPracParam.power = *mPower;
                 thPracParam.value = *mValue;
+
+                thPracParam.hyper = *mHyper;
+                thPracParam.summon = *mSummon;
+                thPracParam.levelR = *mLevelR;
+                thPracParam.priorityR = *mLevelR;
+                thPracParam.levelB = *mLevelB;
+                thPracParam.priorityB = *mLevelB;
+                thPracParam.levelG = *mLevelG;
+                thPracParam.priorityG = *mLevelG;
+                thPracParam.levelY = *mLevelY;
+                thPracParam.priorityY = *mLevelY;
                 break;
             case 4:
                 Close();
-                *mNavFocus = 0;
                 break;
             default:
                 break;
@@ -205,11 +256,49 @@ namespace TH20 {
                 mPower(power_str.c_str());
                 auto value_str = std::format("{:.2f}", (float)(*mValue) / 5000.0f);
                 mValue(value_str.c_str());
+                mHyper();
+                mSummon();
+
+                // TODO: This is ass
+                ImGui::Columns(2);
+                auto& style = ImGui::GetStyle();
+                auto old_col = style.Colors[ImGuiCol_SliderGrab];
+                auto old_col_active = style.Colors[ImGuiCol_SliderGrabActive];
+
+                style.Colors[ImGuiCol_SliderGrab] = ImVec4(1.0f, 0.25f, 0.25f, 0.40f);
+                style.Colors[ImGuiCol_SliderGrabActive] = ImVec4(1.0f, 0.25f, 0.25f, 1.0f);
+                mLevelR();
+                ImGui::NextColumn();
+                mPriorityR();
+
+                style.Colors[ImGuiCol_SliderGrab] = ImVec4(0.25f, 0.25f, 1.0f, 0.40f);
+                style.Colors[ImGuiCol_SliderGrabActive] = ImVec4(0.25f, 0.25f, 1.0f, 1.0f);
+                ImGui::NextColumn();
+                mLevelB();
+                ImGui::NextColumn();
+                mPriorityB();
+
+                style.Colors[ImGuiCol_SliderGrab] = ImVec4(1.0f, 1.0f, 0.25f, 0.40f);
+                style.Colors[ImGuiCol_SliderGrabActive] = ImVec4(1.0f, 1.0f, 0.25f, 1.0f);
+                ImGui::NextColumn();
+                mLevelY();
+                ImGui::NextColumn();
+                mPriorityY();
+
+                style.Colors[ImGuiCol_SliderGrab] = ImVec4(0.25f, 1.0f, 0.25f, 0.40f);
+                style.Colors[ImGuiCol_SliderGrabActive] = ImVec4(0.0f, 1.0f, 0.25f, 1.0f);
+                ImGui::NextColumn();
+                mLevelG();
+                ImGui::NextColumn();
+                mPriorityG();
+
+                style.Colors[ImGuiCol_SliderGrab] = old_col;
+                style.Colors[ImGuiCol_SliderGrabActive] = old_col_active;
+                ImGui::Columns(1);
+
                 mScore();
                 mScore.RoundDown(10);
             }
-
-            mNavFocus();
         }
         int CalcSection()
         {
@@ -303,12 +392,17 @@ namespace TH20 {
         Gui::GuiSlider<int, ImGuiDataType_S32> mBombFragment { TH_BOMB_FRAGMENT, 0, 2 };
         Gui::GuiSlider<int, ImGuiDataType_S32> mPower { TH_POWER, 100, 400 };
         Gui::GuiSlider<int, ImGuiDataType_S32> mValue { TH_VALUE, 0, 1000000 };
-        Gui::GuiDrag<int, ImGuiDataType_S32> mGraze { TH_GRAZE, 0, 999999, 1, 100000 };
 
-        Gui::GuiNavFocus mNavFocus { TH_STAGE, TH_MODE, TH_WARP, TH_DLG,
-            TH_MID_STAGE, TH_END_STAGE, TH_NONSPELL, TH_SPELL, TH_PHASE, TH_CHAPTER,
-            TH_SCORE, TH_LIFE, TH_BOMB, TH_BOMB_FRAGMENT, TH16_SEASON_GAUGE,
-            TH_POWER, TH_VALUE, TH_GRAZE };
+        Gui::GuiSlider<float, ImGuiDataType_Float> mHyper { TH20_HYPER, 0.0f, 1.0f, 0.01f, 1.0f };
+        Gui::GuiSlider<float, ImGuiDataType_Float> mSummon { TH20_SUMMON_GAUGE, 0.0f, 1.0f, 0.01f, 1.0f };
+        Gui::GuiSlider<int32_t, ImGuiDataType_S32> mLevelR { TH20_SUMMON_LEVEL_R, 1, 5 };
+        Gui::GuiSlider<int32_t, ImGuiDataType_S32> mPriorityR { TH20_SUMMON_PRIORITY_R, 0, 1000 };
+        Gui::GuiSlider<int32_t, ImGuiDataType_S32> mLevelB { TH20_SUMMON_LEVEL_B, 1, 5 };
+        Gui::GuiSlider<int32_t, ImGuiDataType_S32> mPriorityB { TH20_SUMMON_PRIORITY_B, 0, 1000 };
+        Gui::GuiSlider<int32_t, ImGuiDataType_S32> mLevelY { TH20_SUMMON_LEVEL_Y, 1, 5 };
+        Gui::GuiSlider<int32_t, ImGuiDataType_S32> mPriorityY { TH20_SUMMON_PRIORITY_Y, 0, 1000 };
+        Gui::GuiSlider<int32_t, ImGuiDataType_S32> mLevelG { TH20_SUMMON_LEVEL_G, 1, 5 };
+        Gui::GuiSlider<int32_t, ImGuiDataType_S32> mPriorityG { TH20_SUMMON_PRIORITY_G, 0, 1000 };
 
         int mChapterSetup[7][2] {
             { 3, 2 },
@@ -1113,8 +1207,8 @@ namespace TH20 {
     {
         *(int*)pCtx->Esp = thPracParam.stage + 1;
     }
-    PATCH_ST(th20_random_crash_fix1, 0x118C0, "\xEB", 1);
-    PATCH_ST(th20_random_crash_fix2, 0x11900, "\xEB", 1);
+    //PATCH_ST(th20_random_crash_fix1, 0x118C0, "\xEB", 1);
+    //PATCH_ST(th20_random_crash_fix2, 0x11900, "\xEB", 1);
 
     /*
     EHOOK_DY(th20_prac_menu_3, 0x122FD4)
@@ -1154,6 +1248,23 @@ namespace TH20 {
             THSectionPatch();
         }
         thPracParam._playLock = true;
+    }
+    EHOOK_DY(th20_patch_stones, 0x133A21)
+    {
+        if (thPracParam.mode != 1)
+            return;
+
+        uintptr_t player_stats = RVA(0x1B8670);
+        *(int32_t*)(player_stats + 0x4C) = (int32_t)(thPracParam.hyper * *(int32_t*)(player_stats + 0x50));
+        *(int32_t*)(player_stats + 0x5C) = (int32_t)(thPracParam.summon * *(int32_t*)(player_stats + 0x60));
+        *(int32_t*)(player_stats + 0x64) = thPracParam.priorityR;
+        *(int32_t*)(player_stats + 0x68) = thPracParam.priorityB;
+        *(int32_t*)(player_stats + 0x6C) = thPracParam.priorityY;
+        *(int32_t*)(player_stats + 0x70) = thPracParam.priorityG;
+        *(int32_t*)(player_stats + 0x74) = thPracParam.levelR;
+        *(int32_t*)(player_stats + 0x78) = thPracParam.levelB;
+        *(int32_t*)(player_stats + 0x7C) = thPracParam.levelY;
+        *(int32_t*)(player_stats + 0x80) = thPracParam.levelG;
     }
     // EHOOK_DY(th20_bgm, 0x42de8c)
     // {

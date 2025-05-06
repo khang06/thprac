@@ -573,7 +573,19 @@ enum th_glossary_t
     TH19_RANK_FORMAT,
     TH19_SHOW_ENEMY_HP,
     TH19_TITLE,
+    TH20_HYPER,
     TH20_PH,
+    TH20_SUMMON_GAUGE,
+    TH20_SUMMON_LEVEL,
+    TH20_SUMMON_LEVEL_B,
+    TH20_SUMMON_LEVEL_G,
+    TH20_SUMMON_LEVEL_R,
+    TH20_SUMMON_LEVEL_Y,
+    TH20_SUMMON_PRIORITY,
+    TH20_SUMMON_PRIORITY_B,
+    TH20_SUMMON_PRIORITY_G,
+    TH20_SUMMON_PRIORITY_R,
+    TH20_SUMMON_PRIORITY_Y,
     TH20_TITLE,
     THPRAC_ABORT,
     THPRAC_ADMIN_RIGHTS,
@@ -1405,7 +1417,7 @@ enum th_glossary_t
     TH_WARP,
 };
 
-extern const char* th_glossary_str[3][1393];
+extern const char* th_glossary_str[3][1405];
 
 extern const th_glossary_t TH_TYPE_SELECT[13];
 
