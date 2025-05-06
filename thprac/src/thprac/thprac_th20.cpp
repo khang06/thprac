@@ -87,7 +87,7 @@ namespace TH20 {
             *mLife = 9;
             *mBomb = 9;
             *mPower = 400;
-            *mValue = 10000;
+            *mValue = 0;
 
             SetFade(0.8f, 0.1f);
             SetStyle(ImGuiStyleVar_WindowRounding, 0.0f);
@@ -203,8 +203,8 @@ namespace TH20 {
                 mBombFragment();
                 auto power_str = std::to_string((float)(*mPower) / 100.0f).substr(0, 4);
                 mPower(power_str.c_str());
-                //mValue();
-                //mValue.RoundDown(10);
+                auto value_str = std::format("{:.2f}", (float)(*mValue) / 5000.0f);
+                mValue(value_str.c_str());
                 mScore();
                 mScore.RoundDown(10);
             }
@@ -302,7 +302,7 @@ namespace TH20 {
         Gui::GuiSlider<int, ImGuiDataType_S32> mBomb { TH_BOMB, 0, 9 };
         Gui::GuiSlider<int, ImGuiDataType_S32> mBombFragment { TH_BOMB_FRAGMENT, 0, 2 };
         Gui::GuiSlider<int, ImGuiDataType_S32> mPower { TH_POWER, 100, 400 };
-        Gui::GuiDrag<int, ImGuiDataType_S32> mValue { TH_VALUE, 0, 999990, 10, 100000 };
+        Gui::GuiSlider<int, ImGuiDataType_S32> mValue { TH_VALUE, 0, 1000000 };
         Gui::GuiDrag<int, ImGuiDataType_S32> mGraze { TH_GRAZE, 0, 999999, 1, 100000 };
 
         Gui::GuiNavFocus mNavFocus { TH_STAGE, TH_MODE, TH_WARP, TH_DLG,
@@ -515,13 +515,26 @@ namespace TH20 {
 
     class THAdvOptWnd : public Gui::PPGuiWnd {
         SINGLETON(THAdvOptWnd);
-        
+        EHOOK_ST(th20_piv_overflow_fix, 0xC5FDB)
+        {
+            uintptr_t stats = RVA(0x1B8670);
+            int32_t piv = *(int32_t*)(stats + 0x44);
+            int32_t piv_base = *(int32_t*)(stats + 0x40); // always 10000?
+            int32_t piv_divisor = *(int32_t*)(stats + 0x48); // always 5000?
+
+            int32_t half_piv_base = piv_base / 2;
+            int64_t uh_oh = (int64_t)piv_base * piv;
+            pCtx->Esi = (int32_t)(uh_oh / piv_divisor) + half_piv_base;
+            pCtx->Eip = RVA(0xC6034);
+        }
 
     public:
 
     private:
 
     private:
+        bool pivOverflowFix = false;
+
         void MasterDisableInit()
         {
         }
@@ -574,6 +587,8 @@ namespace TH20 {
             FpsInit();
             GameplayInit();
             MasterDisableInit();
+
+            th20_piv_overflow_fix.Setup();
         }
 
     public:
@@ -634,6 +649,10 @@ namespace TH20 {
                 DisableKeyOpt();
                 // KeyHUDOpt();
                 // InfLifeOpt();
+
+                if (ImGui::Checkbox("PIV overflow fix", &pivOverflowFix))
+                    th20_piv_overflow_fix.Toggle(pivOverflowFix);
+
                 ImGui::SetNextItemWidth(180.0f);
                 EndOptGroup();
             }
@@ -1094,6 +1113,8 @@ namespace TH20 {
     {
         *(int*)pCtx->Esp = thPracParam.stage + 1;
     }
+    PATCH_ST(th20_random_crash_fix1, 0x118C0, "\xEB", 1);
+    PATCH_ST(th20_random_crash_fix2, 0x11900, "\xEB", 1);
 
     /*
     EHOOK_DY(th20_prac_menu_3, 0x122FD4)
@@ -1128,7 +1149,7 @@ namespace TH20 {
             *(int32_t*)RVA(0x1B873C) = thPracParam.bomb;
             *(int32_t*)RVA(0x1B8740) = thPracParam.bomb_fragment;
             *(int32_t*)RVA(0x1B86A0) = thPracParam.power;
-            //*(int32_t*)(0x4a57d8) = thPracParam.value * 100;
+            *(int32_t*)RVA(0x1B86B4) = thPracParam.value;
 
             THSectionPatch();
         }
