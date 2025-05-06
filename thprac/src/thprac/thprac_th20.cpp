@@ -103,7 +103,7 @@ namespace TH20 {
             case 0:
                 break;
             case 1:
-                //mDiffculty = *((int32_t*)0x49f274);
+                mDiffculty = *((int32_t*)RVA(0x1AEEC0));
                 SetFade(0.8f, 0.1f);
                 Open();
                 thPracParam.Reset();
@@ -183,20 +183,19 @@ namespace TH20 {
             if (mStage())
                 *mSection = *mChapter = 0;
             if (*mMode == 1) {
-                /*
                 int mbs = -1;
-                if (*mStage == 5) { // Counting from 0
+                if (*mStage == 2) { // Counting from 0
                     mbs = 2;
                     if (*mWarp == 2)
                         *mWarp = 0;
                 }
+
                 if (mWarp(mbs))
                     *mSection = *mChapter = *mPhase = 0;
                 if (*mWarp) {
                     SectionWidget();
                     mPhase(TH_PHASE, SpellPhase());
                 }
-                */
 
                 mLife();
                 mLifeFragment();
@@ -240,6 +239,8 @@ namespace TH20 {
         {
             switch (section) {
             case TH20_ST1_BOSS1:
+            case TH20_ST2_BOSS1:
+            case TH20_ST3_BOSS1:
                 return true;
             default:
                 return false;
@@ -310,13 +311,9 @@ namespace TH20 {
             TH_POWER, TH_VALUE, TH_GRAZE };
 
         int mChapterSetup[7][2] {
-            { 2, 2 },
-            { 4, 0 },
-            { 4, 2 },
+            { 3, 2 },
             { 3, 3 },
-            { 5, 3 },
-            { 3, 0 },
-            { 4, 4 },
+            { 4, 3 },
         };
 
         int mDiffculty = 0;
@@ -336,7 +333,7 @@ namespace TH20 {
             uint32_t index = GetMemContent(0x4a6f20, 0x5b48);
             char* repName = (char*)GetMemAddr(0x4a6f20, index * 4 + 0x5b50, 0x21c);
             std::wstring repDir(mAppdataPath);
-            repDir.append(L"\\ShanghaiAlice\\th16\\replay\\");
+            repDir.append(L"\\ShanghaiAlice\\th20tr\\replay\\");
             repDir.append(mb_to_utf16(repName, 932));
 
             std::string param;
@@ -446,8 +443,8 @@ namespace TH20 {
         };
     };
 
-    class TH16InGameInfo : public Gui::GameGuiWnd {
-        TH16InGameInfo() noexcept
+    class TH20InGameInfo : public Gui::GameGuiWnd {
+        TH20InGameInfo() noexcept
         {
             SetTitle("igi");
             SetFade(0.9f, 0.9f);
@@ -456,7 +453,7 @@ namespace TH20 {
             SetWndFlag(ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav | 0);
             OnLocaleChange();
         }
-        SINGLETON(TH16InGameInfo);
+        SINGLETON(TH20InGameInfo);
 
     public:
         int32_t mMissCount;
@@ -648,207 +645,364 @@ namespace TH20 {
 
         adv_opt_ctx mOptCtx;
     };
+    void ECLStdExec(ECLHelper& ecl, unsigned int start, int std_id, int ecl_time = 0)
+    {
+        if (start)
+            ecl.SetPos(start);
+        ecl << ecl_time << 0x0014026e << 0x01ff0000 << 0x00000000 << std_id;
+    }
     void ECLJump(ECLHelper& ecl, unsigned int start, unsigned int dest, int at_frame, int ecl_time = 0)
     {
         ecl.SetPos(start);
         ecl << ecl_time << 0x0018000C << 0x02ff0000 << 0x00000000 << dest - start << at_frame;
     }
+
+    constexpr unsigned int st1PostMaple = 0x7eec;
+    constexpr unsigned int st2PostMaple = 0xa45c;
+    constexpr unsigned int st3PostMaple = 0xb3e8;
+    constexpr unsigned int stdInterruptSize = 0x14;
     __declspec(noinline) void THStageWarp(ECLHelper& ecl, int stage, int portion)
     {
         if (stage == 1) {
+            constexpr unsigned int st1MainFront = 0x84e4;
+            constexpr unsigned int st1MainSub00 = 0x5ad8;
+            constexpr unsigned int st1MainLatter = 0x85ac;
+            constexpr unsigned int st1MainLatterWait = 0x5d28;
+
             switch (portion) {
-            case 1:
+            case 1: break;
+            case 2: {
+                constexpr unsigned int mainSub02Call = 0x5b98;
+                ECLJump(ecl, st1PostMaple, st1MainFront, 60, 90);
+                ECLJump(ecl, st1MainSub00, mainSub02Call, 0, 0);
                 break;
-            case 2:
-                ECLJump(ecl, 0x7c10, 0x7df8, 60, 90); // 0x7f14
-                ECLJump(ecl, 0x5070, 0x50a4, 0, 0);
+            }
+            case 3: {
+                constexpr unsigned int mainSub03Call = 0x5bf8;
+                ECLJump(ecl, st1PostMaple, st1MainFront, 60, 90);
+                ECLJump(ecl, st1MainSub00, mainSub03Call, 0, 0);
                 break;
-            case 3:
-                ECLJump(ecl, 0x7c10, 0x7e94, 60, 90);
-                ecl << pair { 0x60d4, 0 };
+            }
+            case 4: {
+                constexpr unsigned int mainSub07Call = 0x5d3c;
+                ECLStdExec(ecl, st1PostMaple, 1, 1);
+                ECLJump(ecl, st1PostMaple + stdInterruptSize, st1MainLatter, 60, 90);
+                ECLJump(ecl, st1MainLatterWait, mainSub07Call, 0, 0);
                 break;
-            case 4:
-                ECLJump(ecl, 0x7c10, 0x7e94, 60, 90);
-                ECLJump(ecl, 0x5160, 0x51d0, 0, 0);
+            }
+            case 5: {
+                constexpr unsigned int mainSub09Call = 0x5de8;
+                ECLStdExec(ecl, st1PostMaple, 1, 1);
+                ECLJump(ecl, st1PostMaple + stdInterruptSize, st1MainLatter, 60, 90);
+                ECLJump(ecl, st1MainLatterWait, mainSub09Call, 0, 0);
                 break;
-            default:
-                break;
+            }
+            default: break;
             }
         } else if (stage == 2) {
+            constexpr unsigned int st2MainFront = 0xaa54;
+            constexpr unsigned int st2MainSub00 = 0x7778;
+            constexpr unsigned int st2MainLatter = 0xab1c;
+            constexpr unsigned int st2MainLatterWait = 0x798c;
+
             switch (portion) {
-            case 1:
+            case 1: break;
+            case 2: {
+                constexpr unsigned int mainSub02Call = 0x7838;
+                ECLJump(ecl, st2PostMaple, st2MainFront, 60, 90);
+                ECLJump(ecl, st2MainSub00, mainSub02Call, 0, 0);
                 break;
-            case 2:
-                ECLJump(ecl, 0x77c8, 0x79b0, 60, 90);
-                ECLJump(ecl, 0x4070, 0x40f8, 0, 0);
+            }
+            case 3: {
+                constexpr unsigned int mainSub04Call = 0x78f8;
+                ECLJump(ecl, st2PostMaple, st2MainFront, 60, 90);
+                ECLJump(ecl, st2MainSub00, mainSub04Call, 0, 0);
                 break;
-            case 3:
-                ECLJump(ecl, 0x77c8, 0x79b0, 60, 90);
-                ECLJump(ecl, 0x4070, 0x412c, 0, 0);
+            }
+            case 4: {
+                constexpr unsigned int mainSub07Call = 0x79a0;
+                ECLStdExec(ecl, st2PostMaple, 1, 1);
+                ECLJump(ecl, st2PostMaple + stdInterruptSize, st2MainLatter, 60, 90);
+                ECLJump(ecl, st2MainLatterWait, mainSub07Call, 0, 0);
                 break;
-            case 4:
-                ECLJump(ecl, 0x77c8, 0x79b0, 60, 90);
-                ECLJump(ecl, 0x4070, 0x4194, 0, 0);
+            }
+            case 5: {
+                constexpr unsigned int mainSub08Call = 0x79ec;
+                ECLStdExec(ecl, st2PostMaple, 1, 1);
+                ECLJump(ecl, st2PostMaple + stdInterruptSize, st2MainLatter, 60, 90);
+                ECLJump(ecl, st2MainLatterWait, mainSub08Call, 0, 0);
                 break;
-            default:
+            }
+            case 6: {
+                constexpr unsigned int mainSub09Call = 0x7a4c;
+                ECLStdExec(ecl, st2PostMaple, 1, 1);
+                ECLJump(ecl, st2PostMaple + stdInterruptSize, st2MainLatter, 60, 90);
+                ECLJump(ecl, st2MainLatterWait, mainSub09Call, 0, 0);
                 break;
+            }
+            default: break;
             }
         } else if (stage == 3) {
+            constexpr unsigned int st3MainFront = 0xb9e0;
+            constexpr unsigned int st3MainSub00 = 0x903c;
+
             switch (portion) {
-            case 1:
-                break;
-            case 2:
-                ECLJump(ecl, 0x8648, 0x88bc, 60, 90); // 0x8960
-                ECLJump(ecl, 0x5248, 0x527c, 0, 0);
-                break;
-            case 3:
-                ECLJump(ecl, 0x8648, 0x88bc, 60, 90); // 0x8960
-                ECLJump(ecl, 0x5248, 0x52b0, 0, 0);
-                break;
-            case 4:
-                ECLJump(ecl, 0x8648, 0x88bc, 60, 90); // 0x8960
-                ECLJump(ecl, 0x5248, 0x5318, 0, 0);
-                break;
-            case 5:
-                ECLJump(ecl, 0x8648, 0x8960, 60, 90);
-                break;
-            case 6:
-                ECLJump(ecl, 0x8648, 0x8960, 60, 90);
-                ECLJump(ecl, 0x536c, 0x539c, 0, 0);
-                break;
-            default:
+            case 1: break;
+            case 2: {
+                constexpr unsigned int mainSub01Call = 0x909c;
+                ECLJump(ecl, st3PostMaple, st3MainFront, 60, 90);
+                ECLJump(ecl, st3MainSub00, mainSub01Call, 0, 0);
                 break;
             }
-        } else if (stage == 4) {
-            switch (portion) {
-            case 1:
-                break;
-            case 2:
-                ECLJump(ecl, 0x9bb0, 0x9e24, 60, 90); // 0x9ec0
-                ECLJump(ecl, 0x6244, 0x6278, 0, 0);
-                break;
-            case 3:
-                ECLJump(ecl, 0x9bb0, 0x9e24, 60, 90); // 0x9ec0
-                ECLJump(ecl, 0x6244, 0x62ac, 0, 0);
-                break;
-            case 4:
-                ECLJump(ecl, 0x9bb0, 0x9ec0, 60, 90);
-                break;
-            case 5:
-                ECLJump(ecl, 0x9bb0, 0x9ec0, 60, 90);
-                ECLJump(ecl, 0x6314, 0x6348, 0, 0);
-                break;
-            case 6:
-                if (thPracParam.phase == 1) {
-                    ECLJump(ecl, 0x8B28, 0x8648, 0, 0);
-                }
-                ECLJump(ecl, 0x9bb0, 0x9ec0, 60, 90);
-                ECLJump(ecl, 0x6314, 0x63a8, 0, 0);
-                break;
-            default:
+            case 3: {
+                constexpr unsigned int mainSub03Call = 0x915c;
+                ECLJump(ecl, st3PostMaple, st3MainFront, 60, 90);
+                ECLJump(ecl, st3MainSub00, mainSub03Call, 0, 0);
                 break;
             }
-        } else if (stage == 5) {
-            switch (portion) {
-            case 1:
-                break;
-            case 2:
-                ECLJump(ecl, 0x9070, 0x925c, 60, 90); // 0x92f8
-                ECLJump(ecl, 0x4a94, 0x4ac8, 0, 0);
-                break;
-            case 3:
-                ECLJump(ecl, 0x9070, 0x925c, 60, 90); // 0x92f8
-                ECLJump(ecl, 0x4a94, 0x4afc, 0, 0);
-                break;
-            case 4:
-                ECLJump(ecl, 0x9070, 0x925c, 60, 90); // 0x92f8
-                ECLJump(ecl, 0x4a94, 0x4b30, 0, 0);
-                break;
-            case 5:
-                ECLJump(ecl, 0x9070, 0x925c, 60, 90); // 0x92f8
-                ECLJump(ecl, 0x4a94, 0x4b64, 0, 0);
-                break;
-            case 6:
-                ECLJump(ecl, 0x9070, 0x92f8, 60, 90);
-                ecl << pair { 0x7418, 0 };
-                break;
-            case 7:
-                ECLJump(ecl, 0x9070, 0x92f8, 60, 90);
-                ECLJump(ecl, 0x4bcc, 0x4c00, 0, 0);
-                break;
-            case 8:
-                ECLJump(ecl, 0x9070, 0x92f8, 60, 90);
-                ECLJump(ecl, 0x4bcc, 0x4c60, 0, 0);
-                break;
-            default:
+            case 4: {
+                constexpr unsigned int mainSub04Call = 0x91bc;
+                ECLJump(ecl, st3PostMaple, st3MainFront, 60, 90);
+                ECLJump(ecl, st3MainSub00, mainSub04Call, 0, 0);
                 break;
             }
-        } else if (stage == 6) {
-            switch (portion) {
-            case 1:
-                break;
-            case 2:
-                ECLJump(ecl, 0x5698, 0x58ac, 60, 90);
-                ECLJump(ecl, 0x34c0, 0x34f4, 0, 0);
-                ecl << pair { 0x3aac, 0 };
-                break;
-            case 3:
-                ECLJump(ecl, 0x5698, 0x58ac, 60, 90);
-                ECLJump(ecl, 0x34c0, 0x3538, 0, 0);
-                break;
-            default:
+            case 5: {
+                constexpr unsigned int mainSub05Call = 0x921c;
+                ECLStdExec(ecl, st3PostMaple, 1, 1);
+                ECLJump(ecl, st3PostMaple + stdInterruptSize, st3MainFront, 60, 90);
+                ECLJump(ecl, st3MainSub00, mainSub05Call, 0, 0);
                 break;
             }
-        } else if (stage == 7) {
-            switch (portion) {
-            case 1:
+            case 6: {
+                constexpr unsigned int mainSub06Call = 0x927c;
+                ECLStdExec(ecl, st3PostMaple, 1, 1);
+                ECLJump(ecl, st3PostMaple + stdInterruptSize, st3MainFront, 60, 90);
+                ECLJump(ecl, st3MainSub00, mainSub06Call, 0, 0);
                 break;
-            case 2:
-                ECLJump(ecl, 0x988c, 0x9b18, 60, 90); // 0x9c1c
-                ECLJump(ecl, 0x614c, 0x6180, 0, 0);
+            }
+            case 7: {
+                constexpr unsigned int mainSub07Call = 0x92dc;
+                ECLStdExec(ecl, st3PostMaple, 1, 1);
+                ECLJump(ecl, st3PostMaple + stdInterruptSize, st3MainFront, 60, 90);
+                ECLJump(ecl, st3MainSub00, mainSub07Call, 0, 0);
                 break;
-            case 3:
-                ECLJump(ecl, 0x988c, 0x9b18, 60, 90); // 0x9c1c
-                ECLJump(ecl, 0x614c, 0x61b4, 0, 0);
-                break;
-            case 4:
-                ECLJump(ecl, 0x988c, 0x9b18, 60, 90); // 0x9c1c
-                ECLJump(ecl, 0x614c, 0x61e8, 0, 0);
-                break;
-            case 5:
-                ECLJump(ecl, 0x988c, 0x9c1c, 60, 90);
-                break;
-            case 6:
-                ECLJump(ecl, 0x988c, 0x9c1c, 60, 10);
-                ECLJump(ecl, 0x623c, 0x6284, 0, 0);
-                break;
-            case 7:
-                ECLJump(ecl, 0x988c, 0x9c1c, 60, 90);
-                ECLJump(ecl, 0x623c, 0x62e0, 0, 0);
-                break;
-            case 8:
-                ECLJump(ecl, 0x988c, 0x9c1c, 60, 90);
-                ECLJump(ecl, 0x623c, 0x633c, 0, 0);
-                break;
-            default:
-                break;
+            }
+            default: break;
             }
         }
     }
     __declspec(noinline) void THPatch(ECLHelper& ecl, th_sections_t section)
     {
+        constexpr unsigned int st1BossCreateCall = 0x8680;
+        constexpr unsigned int st1bsPrePushSpellID = 0x3b8;
+        constexpr unsigned int st1bsPostNotSpellPracCheck = 0x4a0;
+        constexpr unsigned int st1bsSpellSubCallOrd = 0x4d0;
+
+        constexpr unsigned int st2BossCreateCall = 0xabf0;
+        constexpr unsigned int st2bsPrePushSpellID = 0x3d0;
+        constexpr unsigned int st2bsPostNotSpellPracCheck = 0x4b8;
+        constexpr unsigned int st2bsSpellSubCallOrd = 0x4e8;
+        constexpr unsigned int st2bsNonSubCallOrd = 0x628;
+
+        constexpr unsigned int st3BossCreateCall = 0xbaa0;
+        constexpr unsigned int st3bsPrePushSpellID = 0x458;
+        constexpr unsigned int st3bsPostNotSpellPracCheck = 0x540;
+        constexpr unsigned int st3bsSpellSubCallOrd = 0x570;
+        constexpr unsigned int st3bsNonSubCallOrd = 0x6d0;
+
         switch (section) {
-        case THPrac::TH20::TH20_ST1_MID1:
-            // ECLJump(ecl, 0x7be8, 0x7e50, 60);
+        case THPrac::TH20::TH20_ST1_MID1: {
+            constexpr unsigned int st1MBossCreateCall = 0x8568;
+            ECLStdExec(ecl, st1PostMaple, 1, 1);
+            ECLJump(ecl, st1PostMaple + stdInterruptSize, st1MBossCreateCall, 60, 90);
             break;
-        default:
+        }
+        case THPrac::TH20::TH20_ST1_BOSS1: {
+            constexpr unsigned int st1BossDialogueCall = 0x866c;
+            ECLStdExec(ecl, st1PostMaple, 1, 1);
+            if (thPracParam.dlg)
+                ECLJump(ecl, st1PostMaple + stdInterruptSize, st1BossDialogueCall, 60);
+            else
+                ECLJump(ecl, st1PostMaple + stdInterruptSize, st1BossCreateCall, 60);
             break;
+        }
+        case THPrac::TH20::TH20_ST1_BOSS2: {
+            ECLStdExec(ecl, st1PostMaple, 1, 1);
+            ECLJump(ecl, st1PostMaple + stdInterruptSize, st1BossCreateCall, 60);
+            ecl.SetFile(2);
+            ECLJump(ecl, st1bsPrePushSpellID, st1bsPostNotSpellPracCheck, 1); // Utilize Spell Practice Jump
+            break;
+        }
+        case THPrac::TH20::TH20_ST1_BOSS3: {
+            constexpr unsigned int st1bsNonSubCallOrd = 0x610;
+            constexpr unsigned int st1bsNon2InvulnCallVal = 0x1268;
+            constexpr unsigned int st1bsNon2BossItemCallSomething = 0x1344 + 0x4; //32th cringequit on me when
+            constexpr unsigned int st1bsNon2PlaySoundSomething = 0x1470 + 0x4;    //I asked what these were so :shrug:
+            constexpr unsigned int st1bsNon2PostLifeMarker = 0x15c8;
+            constexpr unsigned int st1bsNon2PostWait = 0x16b4; // 0x1608 previously
+
+            ECLStdExec(ecl, st1PostMaple, 1, 1);
+            ECLJump(ecl, st1PostMaple + stdInterruptSize, st1BossCreateCall, 60);
+            ecl.SetFile(2);
+            ecl << pair { st1bsNonSubCallOrd, (int8_t)0x32 }; // Set nonspell ID in sub call to '2'
+            ecl << pair { st1bsNon2InvulnCallVal, (int16_t)0 }; // Disable Invincible
+            ecl << pair { st1bsNon2BossItemCallSomething, (int16_t)0 }; // Disable item drops
+            ecl << pair { st1bsNon2PlaySoundSomething, (int16_t)0 }; // Disable sound effect
+            ECLJump(ecl, st1bsNon2PostLifeMarker, st1bsNon2PostWait, 0); // Skip wait
+            break;
+        }
+        case THPrac::TH20::TH20_ST1_BOSS4: {
+            ECLStdExec(ecl, st1PostMaple, 1, 1);
+            ECLJump(ecl, st1PostMaple + stdInterruptSize, st1BossCreateCall, 60);
+            ecl.SetFile(2);
+            ECLJump(ecl, st1bsPrePushSpellID, st1bsPostNotSpellPracCheck, 1); // Utilize Spell Practice Jump
+            ecl << pair { st1bsSpellSubCallOrd, (int8_t)0x32 }; // Set spell ID in sub call to '2'
+            break;
+        }
+        case THPrac::TH20::TH20_ST1_BOSS5: {
+            ECLStdExec(ecl, st1PostMaple, 1, 1);
+            ECLJump(ecl, st1PostMaple + stdInterruptSize, st1BossCreateCall, 60);
+            ecl.SetFile(2);
+            ECLJump(ecl, st1bsPrePushSpellID, st1bsPostNotSpellPracCheck, 1); // Utilize Spell Practice Jump
+            ecl << pair { st1bsSpellSubCallOrd, (int8_t)0x33 }; // Set spell ID in sub call to '3'
+            break;
+        }
+        case THPrac::TH20::TH20_ST2_MID1: {
+            constexpr unsigned int st2MBossCreateCall = 0xaad8;
+            ECLJump(ecl, st2PostMaple, st2MBossCreateCall, 60, 90);
+            break;
+        }
+        case THPrac::TH20::TH20_ST2_BOSS1: {
+            constexpr unsigned int st2BossDialogueCall = 0xabdc;
+            ECLStdExec(ecl, st2PostMaple, 1, 1);
+            if (thPracParam.dlg)
+                ECLJump(ecl, st2PostMaple + stdInterruptSize, st2BossDialogueCall, 60);
+            else
+                ECLJump(ecl, st2PostMaple + stdInterruptSize, st2BossCreateCall, 60);
+            break;
+        }
+        case THPrac::TH20::TH20_ST2_BOSS2: {
+            ECLStdExec(ecl, st2PostMaple, 1, 1);
+            ECLJump(ecl, st2PostMaple + stdInterruptSize, st2BossCreateCall, 60);
+            ecl.SetFile(2);
+            ECLJump(ecl, st2bsPrePushSpellID, st2bsPostNotSpellPracCheck, 1); // Utilize Spell Practice Jump
+            break;
+        }
+        case THPrac::TH20::TH20_ST2_BOSS3: {
+            constexpr unsigned int st2bsNon2InvulnCallVal = 0x11d4;
+            constexpr unsigned int st2bsNon2BossItemCallSomething = 0x12b0 + 0x4;
+            constexpr unsigned int st2bsNon2PlaySoundSomething = 0x13dc + 0x4;
+            constexpr unsigned int st2bsNon2PostLifeMarker = 0x1534;
+            constexpr unsigned int st2bsNon2PostWait = 0x1620;
+
+            ECLStdExec(ecl, st2PostMaple, 1, 1);
+            ECLJump(ecl, st2PostMaple + stdInterruptSize, st2BossCreateCall, 60);
+            ecl.SetFile(2);
+            ecl << pair { st2bsNonSubCallOrd, (int8_t)0x32 }; // Set nonspell ID in sub call to '2'
+            ecl << pair { st2bsNon2InvulnCallVal, (int16_t)0 }; // Disable Invincible
+            ecl << pair { st2bsNon2BossItemCallSomething, (int16_t)0 }; // Disable item drops
+            ecl << pair { st2bsNon2PlaySoundSomething, (int16_t)0 }; // Disable sound effect
+            ECLJump(ecl, st2bsNon2PostLifeMarker, st2bsNon2PostWait, 0); // Skip wait
+            break;
+        }
+        case THPrac::TH20::TH20_ST2_BOSS4: {
+            ECLStdExec(ecl, st2PostMaple, 1, 1);
+            ECLJump(ecl, st2PostMaple + stdInterruptSize, st2BossCreateCall, 60);
+            ecl.SetFile(2);
+            ECLJump(ecl, st2bsPrePushSpellID, st2bsPostNotSpellPracCheck, 1); // Utilize Spell Practice Jump
+            ecl << pair { st2bsSpellSubCallOrd, (int8_t)0x32 }; // Set spell ID in sub call to '2'
+            break;
+        }
+        case THPrac::TH20::TH20_ST2_BOSS5: {
+            ECLStdExec(ecl, st2PostMaple, 1, 1);
+            ECLJump(ecl, st2PostMaple + stdInterruptSize, st2BossCreateCall, 60);
+            ecl.SetFile(2);
+            ECLJump(ecl, st2bsPrePushSpellID, st2bsPostNotSpellPracCheck, 1); // Utilize Spell Practice Jump
+            ecl << pair { st2bsSpellSubCallOrd, (int8_t)0x33 }; // Set spell ID in sub call to '3'
+            break;
+        }
+
+        case THPrac::TH20::TH20_ST3_BOSS1: {
+            constexpr unsigned int st3BossDialogueCall = 0xba8c;
+            ECLStdExec(ecl, st3PostMaple, 1, 1);
+            if (thPracParam.dlg)
+                ECLJump(ecl, st3PostMaple + stdInterruptSize, st3BossDialogueCall, 60);
+            else
+                ECLJump(ecl, st3PostMaple + stdInterruptSize, st3BossCreateCall, 60);
+            break;
+        }
+        case THPrac::TH20::TH20_ST3_BOSS2: {
+            ECLStdExec(ecl, st3PostMaple, 1, 1);
+            ECLJump(ecl, st3PostMaple + stdInterruptSize, st3BossCreateCall, 60);
+            ecl.SetFile(2);
+            ECLJump(ecl, st3bsPrePushSpellID, st3bsPostNotSpellPracCheck, 1); // Utilize Spell Practice Jump
+            break;
+        }
+        case THPrac::TH20::TH20_ST3_BOSS3: {
+            constexpr unsigned int st3bsNon2InvulnCallVal = 0x1074;
+            constexpr unsigned int st3bsNon2BossItemCallSomething = 0x1150 + 0x4;
+            constexpr unsigned int st3bsNon2PlaySoundSomething = 0x127c + 0x4;
+            constexpr unsigned int st3bsNon2PostLifeMarker = 0x13d4;
+            constexpr unsigned int st3bsNon2PostWait = 0x1500;
+
+            ECLStdExec(ecl, st3PostMaple, 1, 1);
+            ECLJump(ecl, st3PostMaple + stdInterruptSize, st3BossCreateCall, 60);
+            ecl.SetFile(2);
+            ecl << pair { st3bsNonSubCallOrd, (int8_t)0x32 }; // Set nonspell ID in sub call to '2'
+            ecl << pair { st3bsNon2InvulnCallVal, (int16_t)0 }; // Disable Invincible
+            ecl << pair { st3bsNon2BossItemCallSomething, (int16_t)0 }; // Disable item drops
+            ecl << pair { st3bsNon2PlaySoundSomething, (int16_t)0 }; // Disable sound effect
+            ECLJump(ecl, st3bsNon2PostLifeMarker, st3bsNon2PostWait, 0); // Skip wait
+            break;
+        }
+        case THPrac::TH20::TH20_ST3_BOSS4: {
+            ECLStdExec(ecl, st3PostMaple, 1, 1);
+            ECLJump(ecl, st3PostMaple + stdInterruptSize, st3BossCreateCall, 60);
+            ecl.SetFile(2);
+            ECLJump(ecl, st3bsPrePushSpellID, st3bsPostNotSpellPracCheck, 1); // Utilize Spell Practice Jump
+            ecl << pair { st3bsSpellSubCallOrd, (int8_t)0x32 }; // Set spell ID in sub call to '2'
+            break;
+        }
+        case THPrac::TH20::TH20_ST3_BOSS5: {
+            constexpr unsigned int st3bsNon3InvulnCallVal = 0x1d0c;
+            constexpr unsigned int st3bsNon3BossItemCallSomething = 0x1de8 + 0x4;
+            constexpr unsigned int st3bsNon3PlaySoundSomething = 0x1f14 + 0x4;
+            constexpr unsigned int st3bsNon3PostLifeCount = 0x2080; //is this right? life count = 0? zun...
+            constexpr unsigned int st3bsNon3PostWait = 0x21ac;
+
+            ECLStdExec(ecl, st3PostMaple, 1, 1);
+            ECLJump(ecl, st3PostMaple + stdInterruptSize, st3BossCreateCall, 60);
+            ecl.SetFile(2);
+            ecl << pair { st3bsNonSubCallOrd, (int8_t)0x33 }; // Set nonspell ID in sub call to '3'
+            ecl << pair { st3bsNon3InvulnCallVal, (int16_t)0 }; // Disable Invincible
+            ecl << pair { st3bsNon3BossItemCallSomething, (int16_t)0 }; // Disable item drops
+            ecl << pair { st3bsNon3PlaySoundSomething, (int16_t)0 }; // Disable sound effect
+            ECLJump(ecl, st3bsNon3PostLifeCount, st3bsNon3PostWait, 0); // Skip wait
+            break;
+        }
+        case THPrac::TH20::TH20_ST3_BOSS6: {
+            ECLStdExec(ecl, st3PostMaple, 1, 1);
+            ECLJump(ecl, st3PostMaple + stdInterruptSize, st3BossCreateCall, 60);
+            ecl.SetFile(2);
+            ECLJump(ecl, st3bsPrePushSpellID, st3bsPostNotSpellPracCheck, 1); // Utilize Spell Practice Jump
+            ecl << pair { st3bsSpellSubCallOrd, (int8_t)0x33 }; // Set spell ID in sub call to '3'
+            break;
+        }
+        case THPrac::TH20::TH20_ST3_BOSS7: {
+            ECLStdExec(ecl, st3PostMaple, 1, 1);
+            ECLJump(ecl, st3PostMaple + stdInterruptSize, st3BossCreateCall, 60);
+            ecl.SetFile(2);
+            ECLJump(ecl, st3bsPrePushSpellID, st3bsPostNotSpellPracCheck, 1); // Utilize Spell Practice Jump
+            ecl << pair { st3bsSpellSubCallOrd, (int8_t)0x34 }; // Set spell ID in sub call to '4'
+            break;
+        }
+        default: break;
         }
     }
     __declspec(noinline) void THSectionPatch()
     {
         ECLHelper ecl;
-        ecl.SetBaseAddr((void*)GetMemAddr(0x4a6dc0, 0x17c, 0xC));
+        ecl.SetBaseAddr((void*)GetMemAddr(RVA(0x1b85f0), 0x104, 0xc));
 
         auto section = thPracParam.section;
         if (section >= 10000 && section < 20000) {
@@ -976,8 +1130,7 @@ namespace TH20 {
             *(int32_t*)RVA(0x1B86A0) = thPracParam.power;
             //*(int32_t*)(0x4a57d8) = thPracParam.value * 100;
 
-            // not working yet
-            //THSectionPatch();
+            THSectionPatch();
         }
         thPracParam._playLock = true;
     }

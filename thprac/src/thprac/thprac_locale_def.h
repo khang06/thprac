@@ -3014,15 +3014,32 @@ enum th_sections_t : uint8_t
     A0000ERROR,
     TH20_ST1_MID1,
     TH20_ST1_BOSS1,
+    TH20_ST1_BOSS2,
+    TH20_ST1_BOSS3,
+    TH20_ST1_BOSS4,
+    TH20_ST1_BOSS5,
+    TH20_ST2_MID1,
+    TH20_ST2_BOSS1,
+    TH20_ST2_BOSS2,
+    TH20_ST2_BOSS3,
+    TH20_ST2_BOSS4,
+    TH20_ST2_BOSS5,
+    TH20_ST3_BOSS1,
+    TH20_ST3_BOSS2,
+    TH20_ST3_BOSS3,
+    TH20_ST3_BOSS4,
+    TH20_ST3_BOSS5,
+    TH20_ST3_BOSS6,
+    TH20_ST3_BOSS7,
 };
 
-extern const char* th_sections_str[3][4][3];
+extern const char* th_sections_str[3][4][20];
 
-extern const uint8_t th_sections_bgm[3];
+extern const uint8_t th_sections_bgm[20];
 
-extern const th_sections_t th_sections_cba[1][1][2];
+extern const th_sections_t th_sections_cba[3][2][8];
 
-extern const th_sections_t th_sections_cbt[1][2][3];
+extern const th_sections_t th_sections_cbt[3][2][5];
 
 extern const th_glossary_t TH20_RAGE[3];
 

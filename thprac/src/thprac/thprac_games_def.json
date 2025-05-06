@@ -10115,19 +10115,131 @@
     },
 
     "sections": {
-      "TH20_ST1_MID1": {
-        "bgm": 0,
-        "spell": 0,
-        "appearance": [ 1, 1, 1 ],
-        "!ENHL": "TH_MID_NS1"
-      },
-	  "TH20_ST1_BOSS1": {
-        "bgm": 1,
-        "spell": 0,
-        "appearance": [ 1, 1, 1 ],
-        "!ENHL": "TH_END_NS1"
-      }
+        "TH20_ST1_MID1": {
+            "bgm": 0,
+            "spell": 0,
+            "appearance": [ 1, 1, 1 ],
+            "!ENHL": "TH_MID_NS1"
+        },
+        "TH20_ST1_BOSS1": {
+            "bgm": 1,
+            "spell": 0,
+            "appearance": [ 1, 2, 1 ],
+            "!ENHL": "TH_END_NS1"
+        },
+        "TH20_ST1_BOSS2": {
+            "bgm": 1,
+            "spell": 1,
+            "appearance": [ 1, 2, 2 ],
+            "!EN": [ "塵符「コズミックダスト」", "[TL Needed] Spell 1 (Easy/Normal)", "塵符「コズミックダスト」" ],
+            "!HL": [ "塵符「宇宙塵」", "[TL Needed] Spell 1 (Hard/Lunatic)", "塵符「宇宙塵」" ]
+        },
+        "TH20_ST1_BOSS3": {
+            "bgm": 1,
+            "spell": 0,
+            "appearance": [ 1, 2, 3 ],
+            "!ENHL": "TH_END_NS2"
+        },
+        "TH20_ST1_BOSS4": {
+            "bgm": 1,
+            "spell": 1,
+            "appearance": [ 1, 2, 4 ],
+            "!EN": [ "塵符「唐櫃返し」", "[TL Needed] Spell 2 (Easy/Normal)", "塵符「唐櫃返し」" ],
+            "!HL": [ "塵符「唐櫃大返し」", "[TL Needed] Spell 2 (Hard/Lunatic)", "塵符「唐櫃大返し」" ]
+        },
+        "TH20_ST1_BOSS5": {
+            "bgm": 1,
+            "spell": 1,
+            "appearance": [ 1, 2, 5 ],
+            "!ENHL": [ "塵符「塵のすみか」", "[TL Needed] Spell 3", "塵符「塵のすみか」" ]
+        },
+
+        "TH20_ST2_MID1": {
+            "bgm": 0,
+            "spell": 0,
+            "appearance": [ 2, 1, 1 ],
+            "!ENHL": "TH_MID_NS1"
+        },
+        "TH20_ST2_BOSS1": {
+            "bgm": 1,
+            "spell": 0,
+            "appearance": [ 2, 2, 1 ],
+            "!ENHL": "TH_END_NS1"
+        },
+        "TH20_ST2_BOSS2": {
+            "bgm": 1,
+            "spell": 1,
+            "appearance": [ 2, 2, 2 ],
+            "!EN": [ "魅符「まつろわぬ沢の気」", "[TL Needed] Spell 1 (Easy/Normal)", "魅符「まつろわぬ沢の気」" ],
+            "!HL": [ "魅符「荒くれる沢の気」", "[TL Needed] Spell 1 (Hard/Lunatic)", "魅符「荒くれる沢の気」" ]
+        },
+        "TH20_ST2_BOSS3": {
+            "bgm": 1,
+            "spell": 0,
+            "appearance": [ 2, 2, 3 ],
+            "!ENHL": "TH_END_NS2"
+        },
+        "TH20_ST2_BOSS4": {
+            "bgm": 1,
+            "spell": 1,
+            "appearance": [ 2, 2, 4 ],
+            "!EN": [ "魅符「うなされる森の気」", "[TL Needed] Spell 2 (Easy/Normal)", "魅符「うなされる森の気」" ],
+            "!HL": [ "魅符「息苦しい森の気」", "[TL Needed] Spell 2 (Hard/Lunatic)", "魅符「息苦しい森の気」" ]
+        },
+        "TH20_ST2_BOSS5": {
+            "bgm": 1,
+            "spell": 1,
+            "appearance": [ 2, 2, 5 ],
+            "!EN": [ "魑符「荒ぶる山の気」", "[TL Needed] Spell 3 (Easy/Normal)", "魑符「荒ぶる山の気」" ],
+            "!HL": [ "魑符「怒れる山の気」", "[TL Needed] Spell 3 (Hard/Lunatic)", "魑符「怒れる山の気」" ]
+        },
+
+        "TH20_ST3_BOSS1": {
+            "bgm": 1,
+            "spell": 0,
+            "appearance": [ 3, 2, 1 ],
+            "!ENHL": "TH_END_NS1"
+        },
+        "TH20_ST3_BOSS2": {
+            "bgm": 1,
+            "spell": 1,
+            "appearance": [ 3, 2, 2 ],
+            "!EN": [ "謎符「ピラミダルラビリンス」", "[TL Needed] Spell 1 (Easy/Normal)", "謎符「ピラミダルラビリンス」" ],
+            "!HL": [ "謎符「ヘキサゴナルラビリンス」", "[TL Needed] Spell 1 (Hard/Lunatic)", "謎符「ヘキサゴナルラビリンス」" ]
+        },
+        "TH20_ST3_BOSS3": {
+            "bgm": 1,
+            "spell": 0,
+            "appearance": [ 3, 2, 3 ],
+            "!ENHL": "TH_END_NS2"
+        },
+        "TH20_ST3_BOSS4": {
+            "bgm": 1,
+            "spell": 1,
+            "appearance": [ 3, 2, 4 ],
+            "!EN": [ "塞符「ロジカルウォール」", "[TL Needed] Spell 2 (Easy/Normal)", "塞符「ロジカルウォール」" ],
+            "!HL": [ "塞符「ロジカルグレートウォール」", "[TL Needed] Spell 2 (Hard/Lunatic)", "塞符「ロジカルグレートウォール」" ]
+        },
+        "TH20_ST3_BOSS5": {
+            "bgm": 1,
+            "spell": 0,
+            "appearance": [ 3, 2, 5 ],
+            "!ENHL": "TH_END_NS3"
+        },
+        "TH20_ST3_BOSS6": {
+            "bgm": 1,
+            "spell": 1,
+            "appearance": [ 3, 2, 6 ],
+            "!ENHL": [ "謎符「エンシャントトラップ」", "[TL Needed] Spell 3", "謎符「エンシャントトラップ」" ]
+        },
+        "TH20_ST3_BOSS7": {
+            "bgm": 1,
+            "spell": 1,
+            "appearance": [ 3, 2, 7 ],
+            "!ENHL": [ "金符「弾幕の金字塔」", "[TL Needed] Spell 4", "金符「弾幕の金字塔」" ]
+        }
     },
+
 
     "groups": {
       "TH20_RAGE": [
