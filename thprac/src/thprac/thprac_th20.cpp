@@ -727,11 +727,14 @@ namespace TH20 {
 
             th20_piv_overflow_fix.Setup();
 
-            char patch[5] = "\xE8";
-            *(uintptr_t*)(patch + 1) = (uintptr_t)UnlinkNodeHook - RVA(0x11AB2 + 5);
-            listIterUnlinkFix = new HookCtx(0x11AB2, patch, sizeof(patch));
-            listIterUnlinkFix->Setup();
-            listIterUnlinkFix->Enable();
+            // thcrap base_tsa already patches this to fix the crash, don't try to rehook it if it's being used
+            if (*(uint32_t*)RVA(0x11AD0) == 0x51EC8B55) {
+                char patch[5] = "\xE8";
+                *(uintptr_t*)(patch + 1) = (uintptr_t)UnlinkNodeHook - RVA(0x11AB2 + 5);
+                listIterUnlinkFix = new HookCtx(0x11AB2, patch, sizeof(patch));
+                listIterUnlinkFix->Setup();
+                listIterUnlinkFix->Enable();
+            }
         }
 
     public:
