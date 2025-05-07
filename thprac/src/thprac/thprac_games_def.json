@@ -10121,7 +10121,9 @@
       "TH20_SUMMON_LEVEL_Y": [ "", "LevelY", "" ],
       "TH20_SUMMON_PRIORITY_Y": [ "", "PriorityY", "" ],
       "TH20_SUMMON_LEVEL_G": [ "", "LevelG", "" ],
-      "TH20_SUMMON_PRIORITY_G": [ "", "PriorityG", "" ]
+      "TH20_SUMMON_PRIORITY_G": [ "", "PriorityG", "" ],
+      "TH20_HYP_LOCK": [ "", "Hyper Gauge Lock", "" ],
+      "TH20_WCP_LOCK": [ "", "Wonder Stone Gauge Lock", "" ]
     },
 
     "sections": {

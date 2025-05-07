@@ -505,6 +505,9 @@ namespace TH20 {
             mInfLives.SetTextOffsetRel(x_offset_1, x_offset_2);
             mInfBombs.SetTextOffsetRel(x_offset_1, x_offset_2);
             mInfPower.SetTextOffsetRel(x_offset_1, x_offset_2);
+            mHyperGLock.SetTextOffsetRel(x_offset_1, x_offset_2);
+            mWonderStGLock.SetTextOffsetRel(x_offset_1, x_offset_2);
+
         }
         virtual void OnContentUpdate() override
         {
@@ -512,6 +515,8 @@ namespace TH20 {
             mInfLives();
             mInfBombs();
             mInfPower();
+            mHyperGLock();
+            mWonderStGLock();
         }
         virtual void OnPreUpdate() override
         {
@@ -528,6 +533,8 @@ namespace TH20 {
         Gui::GuiHotKey mMuteki { TH_MUTEKI, "F1", VK_F1, { new HookCtx(0x0FB5CC, "\x01", 1) } };
         Gui::GuiHotKey mInfBombs { TH_INFBOMBS, "F3", VK_F3, { new HookCtx(0x0E40A2, "\x90\x90\x90", 3) } };
         Gui::GuiHotKey mInfPower { TH_INFPOWER, "F4", VK_F4, { new HookCtx(0x0E4022, "\x90\x90\x90", 3) } };
+        Gui::GuiHotKey mHyperGLock { TH20_HYP_LOCK, "F5", VK_F5, { new HookCtx(0x133c15, "\x90\x90\x90", 3) } };
+        Gui::GuiHotKey mWonderStGLock { TH20_WCP_LOCK, "F6", VK_F6, { new HookCtx(0x07ab35, "\x90\x90\x90", 3) } };
 
     public:
         Gui::GuiHotKey mInfLives {
