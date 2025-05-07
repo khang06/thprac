@@ -697,8 +697,7 @@ namespace TH20 {
         };
 
         static void __fastcall UnlinkNodeHook(ZUNListIterable* self, void*, ZUNList* node) {
-            if (self->iter.next == node)
-                self->iter.next = node->next;
+            memset(&self->iter, 0, sizeof(self->iter));
             asm_call_rel<0x11AD0, Thiscall>(self, node);
         }
 
