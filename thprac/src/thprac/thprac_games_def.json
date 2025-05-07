@@ -1307,7 +1307,7 @@
       "TH_CHAPTER_CH": [ "章节 %d", "Chapter %d", "チャプター %d" ],
 
       "TH_ABOUT_THPRAC": [ "关于thprac", "About thprac", "thpracのバージョン情報" ],
-      "TH_ABOUT_VERSION": [ "thprac 版本 %s", "thprac version %s", "thprac ver.%s" ],
+      "TH_ABOUT_VERSION": [ "thprac-th20tr 版本 %s", "thprac-th20tr version %s", "thprac-th20tr ver.%s" ],
       "TH_ABOUT_AUTHOR": [ "作者：Ack", "Author: Ack", "作者：Ack" ],
       "TH_ABOUT_BRANCH": [ "基于RUEEE/thprac", "based on RUEEE/thprac", "based on RUEEE/thprac" ],
       "TH_ABOUT_WEBSITE": [ "网站：https://github.com/khang06/thprac/tree/th20tr-support-hell", "Website: https://github.com/khang06/thprac/tree/th20tr-support-hell", "ウェブサイト：https://github.com/khang06/thprac/tree/th20tr-support-hell" ],
