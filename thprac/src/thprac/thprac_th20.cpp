@@ -170,8 +170,8 @@ namespace TH20 {
                 thPracParam.power = *mPower;
                 thPracParam.value = *mValue;
 
-                thPracParam.hyper = *mHyper;
-                thPracParam.summon = *mSummon;
+                thPracParam.hyper = *mHyper / 10000.0f;
+                thPracParam.summon = *mSummon / 10000.0f;
                 thPracParam.levelR = *mLevelR;
                 thPracParam.priorityR = *mLevelR;
                 thPracParam.levelB = *mLevelB;
@@ -256,8 +256,8 @@ namespace TH20 {
                 mPower(power_str.c_str());
                 auto value_str = std::format("{:.2f}", (float)(*mValue) / 5000.0f);
                 mValue(value_str.c_str());
-                mHyper();
-                mSummon();
+                mHyper(std::format("{:.2f} %%", (float)(*mHyper) / 100.0f).c_str());
+                mSummon(std::format("{:.2f} %%", (float)(*mSummon) / 100.0f).c_str());
 
                 // TODO: This is ass
                 ImGui::Columns(2);
@@ -393,8 +393,8 @@ namespace TH20 {
         Gui::GuiSlider<int, ImGuiDataType_S32> mPower { TH_POWER, 100, 400 };
         Gui::GuiSlider<int, ImGuiDataType_S32> mValue { TH_VALUE, 0, 1000000 };
 
-        Gui::GuiSlider<float, ImGuiDataType_Float> mHyper { TH20_HYPER, 0.0f, 1.0f, 0.01f, 1.0f };
-        Gui::GuiSlider<float, ImGuiDataType_Float> mSummon { TH20_SUMMON_GAUGE, 0.0f, 1.0f, 0.01f, 1.0f };
+        Gui::GuiSlider<int, ImGuiDataType_S32> mHyper { TH20_HYPER, 0, 10000, 1, 1000 };
+        Gui::GuiSlider<int, ImGuiDataType_S32> mSummon { TH20_SUMMON_GAUGE, 0, 10000, 1, 1000 };
         Gui::GuiSlider<int32_t, ImGuiDataType_S32> mLevelR { TH20_SUMMON_LEVEL_R, 1, 5 };
         Gui::GuiSlider<int32_t, ImGuiDataType_S32> mPriorityR { TH20_SUMMON_PRIORITY_R, 0, 1000 };
         Gui::GuiSlider<int32_t, ImGuiDataType_S32> mLevelB { TH20_SUMMON_LEVEL_B, 1, 5 };

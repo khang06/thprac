@@ -2452,7 +2452,7 @@ private:
     THCfgCheckbox mResizableWindow { "resizable_window", false };
     THCfgCheckbox mDisableMaximizeBtn { "disableMax_btn", false };
     THCfgCheckbox mInitWindowPos { "init_window_pos", true };
-    THCfgCheckbox mDisableLocaleChangeHotkey { "disable_locale_change_hotkey", true };
+    THCfgCheckbox mDisableLocaleChangeHotkey { "disable_locale_change_hotkey", false };
 
     THCfgCheckbox mWindowSizeChangeWhenOpen { "change_window_size_when_open", false };
     THCfgInt2 mWindowSize { "changed_window_size", {1920,1440},1,8192 };
