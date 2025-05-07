@@ -628,6 +628,7 @@ namespace TH20 {
 
     private:
         bool pivOverflowFix = false;
+        HookCtx* listIterUnlinkFix = nullptr;
 
         void MasterDisableInit()
         {
@@ -665,6 +666,35 @@ namespace TH20 {
             // th16_all_clear_bonus_3.Toggle(mOptCtx.all_clear_bonus);
         }
 
+
+        // From zero318
+        struct ZUNListIter;
+        struct ZUNListIterable;
+
+        struct ZUNList {
+            void* data; // 0x0
+            ZUNList* next; // 0x4
+            ZUNList* prev; // 0x8
+            ZUNListIterable* list; // 0xC
+            ZUNListIter* current_iter; // 0x10
+        };
+
+        struct ZUNListIter {
+            ZUNList* current; // 0x0
+            ZUNList* next; // 0x4
+        };
+
+        struct ZUNListIterable : ZUNList {
+            ZUNList* tail; // 0x14
+            ZUNListIter iter; // 0x18
+        };
+
+        static void __fastcall UnlinkNodeHook(ZUNListIterable* self, void*, ZUNList* node) {
+            if (self->iter.next == node)
+                self->iter.next = node->next;
+            asm_call_rel<0x11AD0, Thiscall>(self, node);
+        }
+
         THAdvOptWnd() noexcept
         {
             SetWndFlag(ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove);
@@ -683,6 +713,12 @@ namespace TH20 {
             MasterDisableInit();
 
             th20_piv_overflow_fix.Setup();
+
+            char patch[5] = "\xE8";
+            *(uintptr_t*)(patch + 1) = (uintptr_t)UnlinkNodeHook - RVA(0x11AB2 + 5);
+            listIterUnlinkFix = new HookCtx(0x11AB2, patch, sizeof(patch));
+            listIterUnlinkFix->Setup();
+            listIterUnlinkFix->Enable();
         }
 
     public:
