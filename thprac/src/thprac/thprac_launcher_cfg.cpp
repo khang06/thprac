@@ -1054,9 +1054,12 @@ private:
         if (versionJson.HasMember("direct_link") && versionJson["direct_link"].IsString()) {
             cfgGui.mUpdDirectLink = versionJson["direct_link"].GetString();
         }
+        // never read?
+        /*
         if (versionJson.HasMember("file_size") && versionJson["file_size"].IsUint()) {
             cfgGui.mUpdFileSize = versionJson["file_size"].GetUint();
         }
+        */
 
         cfgGui.mUpdDownloads.clear();
         if (versionJson.HasMember("downloads") && versionJson["downloads"].IsObject()) {
@@ -1319,7 +1322,7 @@ private:
         updObj.mChkUpdStatus = STATUS_CHKING_OR_UPDATING;
 
         std::vector<uint8_t> updateJson;
-        DWORD status = DownloadSingleFile(L"https://raw.githubusercontent.com/touhouworldcup/thprac/master/thprac_version.json", updateJson);
+        DWORD status = DownloadSingleFile(L"https://raw.githubusercontent.com/khang06/thprac/th20tr-support-hell/thprac_version.json", updateJson);
         if (status)
             updObj.mChkUpdStatus = STATUS_INTERNET_ERROR;
         else
