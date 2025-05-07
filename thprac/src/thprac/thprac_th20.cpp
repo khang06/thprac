@@ -628,6 +628,7 @@ namespace TH20 {
             pCtx->Esi = (int32_t)(uh_oh / piv_divisor) + half_piv_base;
             pCtx->Eip = RVA(0xC6034);
         }
+        PATCH_ST(th20_instant_esc_r, 0xE59C5, "\xEB", 1);
 
     public:
 
@@ -635,6 +636,7 @@ namespace TH20 {
 
     private:
         bool pivOverflowFix = false;
+        bool instantEscR = false;
         HookCtx* listIterUnlinkFix = nullptr;
 
         void MasterDisableInit()
@@ -720,6 +722,7 @@ namespace TH20 {
             MasterDisableInit();
 
             th20_piv_overflow_fix.Setup();
+            th20_instant_esc_r.Setup();
 
             char patch[5] = "\xE8";
             *(uintptr_t*)(patch + 1) = (uintptr_t)UnlinkNodeHook - RVA(0x11AB2 + 5);
@@ -789,6 +792,8 @@ namespace TH20 {
 
                 if (ImGui::Checkbox("PIV overflow fix", &pivOverflowFix))
                     th20_piv_overflow_fix.Toggle(pivOverflowFix);
+                if (ImGui::Checkbox("Instant ESC+R", &instantEscR))
+                    th20_instant_esc_r.Toggle(instantEscR);
 
                 ImGui::SetNextItemWidth(180.0f);
                 EndOptGroup();
