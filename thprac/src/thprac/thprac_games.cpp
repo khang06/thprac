@@ -1048,6 +1048,7 @@ void AboutOpt(const char* thanks_text)
     if (BeginOptGroup<TH_ABOUT_THPRAC>()) {
         ImGui::Text(S(TH_ABOUT_VERSION), GetVersionStr());
         ImGui::TextUnformatted(S(TH_ABOUT_AUTHOR));
+        ImGui::TextUnformatted(S(TH_ABOUT_BRANCH));
         ImGui::TextUnformatted(S(TH_ABOUT_WEBSITE));
 
         ImGui::NewLine();

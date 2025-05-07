@@ -23,7 +23,7 @@ namespace TH20 {
         int32_t value;
 
         float hyper;
-        float summon;
+        float stone;
         int32_t levelR;
         int32_t priorityR;
         int32_t levelB;
@@ -60,7 +60,7 @@ namespace TH20 {
             GetJsonValue(value);
 
             GetJsonValue(hyper);
-            GetJsonValue(summon);
+            GetJsonValue(stone);
             GetJsonValue(levelR);
             GetJsonValue(priorityR);
             GetJsonValue(levelB);
@@ -97,7 +97,7 @@ namespace TH20 {
                 AddJsonValue(value);
 
                 AddJsonValue(hyper);
-                AddJsonValue(summon);
+                AddJsonValue(stone);
                 AddJsonValue(levelR);
                 AddJsonValue(priorityR);
                 AddJsonValue(levelB);
@@ -171,7 +171,7 @@ namespace TH20 {
                 thPracParam.value = *mValue;
 
                 thPracParam.hyper = *mHyper / 10000.0f;
-                thPracParam.summon = *mSummon / 10000.0f;
+                thPracParam.stone = *mStone / 10000.0f;
                 thPracParam.levelR = *mLevelR;
                 thPracParam.priorityR = *mLevelR;
                 thPracParam.levelB = *mLevelB;
@@ -257,7 +257,7 @@ namespace TH20 {
                 auto value_str = std::format("{:.2f}", (float)(*mValue) / 5000.0f);
                 mValue(value_str.c_str());
                 mHyper(std::format("{:.2f} %%", (float)(*mHyper) / 100.0f).c_str());
-                mSummon(std::format("{:.2f} %%", (float)(*mSummon) / 100.0f).c_str());
+                mStone(std::format("{:.2f} %%", (float)(*mStone) / 100.0f).c_str());
 
                 // TODO: This is ass
                 ImGui::Columns(2);
@@ -394,15 +394,15 @@ namespace TH20 {
         Gui::GuiSlider<int, ImGuiDataType_S32> mValue { TH_VALUE, 0, 1000000 };
 
         Gui::GuiSlider<int, ImGuiDataType_S32> mHyper { TH20_HYPER, 0, 10000, 1, 1000 };
-        Gui::GuiSlider<int, ImGuiDataType_S32> mSummon { TH20_SUMMON_GAUGE, 0, 10000, 1, 1000 };
-        Gui::GuiSlider<int32_t, ImGuiDataType_S32> mLevelR { TH20_SUMMON_LEVEL_R, 1, 5 };
-        Gui::GuiSlider<int32_t, ImGuiDataType_S32> mPriorityR { TH20_SUMMON_PRIORITY_R, 0, 1000 };
-        Gui::GuiSlider<int32_t, ImGuiDataType_S32> mLevelB { TH20_SUMMON_LEVEL_B, 1, 5 };
-        Gui::GuiSlider<int32_t, ImGuiDataType_S32> mPriorityB { TH20_SUMMON_PRIORITY_B, 0, 1000 };
-        Gui::GuiSlider<int32_t, ImGuiDataType_S32> mLevelY { TH20_SUMMON_LEVEL_Y, 1, 5 };
-        Gui::GuiSlider<int32_t, ImGuiDataType_S32> mPriorityY { TH20_SUMMON_PRIORITY_Y, 0, 1000 };
-        Gui::GuiSlider<int32_t, ImGuiDataType_S32> mLevelG { TH20_SUMMON_LEVEL_G, 1, 5 };
-        Gui::GuiSlider<int32_t, ImGuiDataType_S32> mPriorityG { TH20_SUMMON_PRIORITY_G, 0, 1000 };
+        Gui::GuiSlider<int, ImGuiDataType_S32> mStone { TH20_STONE_GAUGE, 0, 10000, 1, 1000 };
+        Gui::GuiSlider<int32_t, ImGuiDataType_S32> mLevelR { TH20_STONE_LEVEL_R, 1, 5 };
+        Gui::GuiSlider<int32_t, ImGuiDataType_S32> mPriorityR { TH20_STONE_PRIORITY_R, 0, 1000 };
+        Gui::GuiSlider<int32_t, ImGuiDataType_S32> mLevelB { TH20_STONE_LEVEL_B, 1, 5 };
+        Gui::GuiSlider<int32_t, ImGuiDataType_S32> mPriorityB { TH20_STONE_PRIORITY_B, 0, 1000 };
+        Gui::GuiSlider<int32_t, ImGuiDataType_S32> mLevelY { TH20_STONE_LEVEL_Y, 1, 5 };
+        Gui::GuiSlider<int32_t, ImGuiDataType_S32> mPriorityY { TH20_STONE_PRIORITY_Y, 0, 1000 };
+        Gui::GuiSlider<int32_t, ImGuiDataType_S32> mLevelG { TH20_STONE_LEVEL_G, 1, 5 };
+        Gui::GuiSlider<int32_t, ImGuiDataType_S32> mPriorityG { TH20_STONE_PRIORITY_G, 0, 1000 };
 
         int mChapterSetup[7][2] {
             { 3, 2 },
@@ -794,7 +794,7 @@ namespace TH20 {
                 EndOptGroup();
             }
 
-            AboutOpt();
+            AboutOpt("Guy, zero318, rue, and you!");
             ImGui::EndChild();
             ImGui::SetWindowFocus();
         }
@@ -1306,7 +1306,7 @@ namespace TH20 {
             asm_call_rel<0x134fe0, Fastcall>(*gauge_manager_ptr);
         }
 
-        *(int32_t*)(player_stats + 0x5C) = (int32_t)(thPracParam.summon * *(int32_t*)(player_stats + 0x60));
+        *(int32_t*)(player_stats + 0x5C) = (int32_t)(thPracParam.stone * *(int32_t*)(player_stats + 0x60));
         *(int32_t*)(player_stats + 0x64) = thPracParam.priorityR;
         *(int32_t*)(player_stats + 0x68) = thPracParam.priorityB;
         *(int32_t*)(player_stats + 0x6C) = thPracParam.priorityY;

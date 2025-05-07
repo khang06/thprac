@@ -1309,8 +1309,8 @@
       "TH_ABOUT_THPRAC": [ "关于thprac", "About thprac", "thpracのバージョン情報" ],
       "TH_ABOUT_VERSION": [ "thprac 版本 %s", "thprac version %s", "thprac ver.%s" ],
       "TH_ABOUT_AUTHOR": [ "作者：Ack", "Author: Ack", "作者：Ack" ],
-      "TH_ABOUT_BRANCH": [ "基于touhouworldcup/thprac", "based on touhouworldcup/thprac", "based on touhouworldcup/thprac" ],
-      "TH_ABOUT_WEBSITE": [ "网站：https://github.com/RUEEE/thprac", "Website: https://github.com/RUEEE/thprac", "ウェブサイト：https://github.com/RUEEE/thprac" ],
+      "TH_ABOUT_BRANCH": [ "基于RUEEE/thprac", "based on RUEEE/thprac", "based on RUEEE/thprac" ],
+      "TH_ABOUT_WEBSITE": [ "网站：https://github.com/khang06/thprac/tree/th20tr-support-hell", "Website: https://github.com/khang06/thprac/tree/th20tr-support-hell", "ウェブサイト：https://github.com/khang06/thprac/tree/th20tr-support-hell" ],
       "TH_ABOUT_THANKS": [ "特别感谢：\n%s", "Special thanks: \n%s", "スペシャルサンクス：\n%s" ],
       "TH_ABOUT_SHOW_LICENCE": [ "显示许可信息", "Show license info", "ライセンス情報を表示" ],
       "TH_ABOUT_HIDE_LICENCE": [ "隐藏许可信息", "Hide license info", "ライセンス情報を非表示" ],
@@ -10112,18 +10112,18 @@
 
     "glossary": {
       "TH20_PH": [ "D", "D", "D" ],
-      "TH20_HYPER": [ "", "Hyper", "" ],
-      "TH20_SUMMON_GAUGE": [ "", "Summon", "" ],
-      "TH20_SUMMON_LEVEL_R": [ "", "LevelR", "" ],
-      "TH20_SUMMON_PRIORITY_R": [ "", "PriorityR", "" ],
-      "TH20_SUMMON_LEVEL_B": [ "", "LevelB", "" ],
-      "TH20_SUMMON_PRIORITY_B": [ "", "PriorityB", "" ],
-      "TH20_SUMMON_LEVEL_Y": [ "", "LevelY", "" ],
-      "TH20_SUMMON_PRIORITY_Y": [ "", "PriorityY", "" ],
-      "TH20_SUMMON_LEVEL_G": [ "", "LevelG", "" ],
-      "TH20_SUMMON_PRIORITY_G": [ "", "PriorityG", "" ],
-      "TH20_HYP_LOCK": [ "", "Hyper Gauge Lock", "" ],
-      "TH20_WCP_LOCK": [ "", "Wonder Stone Gauge Lock", "" ]
+      "TH20_HYPER": [ "Hyper", "Hyper", "Hyper" ],
+      "TH20_STONE_GAUGE": [ "Stone", "Stone", "Stone" ],
+      "TH20_STONE_LEVEL_R": [ "LevelR", "LevelR", "LevelR" ],
+      "TH20_STONE_PRIORITY_R": [ "PriorityR", "PriorityR", "PriorityR" ],
+      "TH20_STONE_LEVEL_B": [ "LevelB", "LevelB", "LevelB" ],
+      "TH20_STONE_PRIORITY_B": [ "PriorityB", "PriorityB", "PriorityB" ],
+      "TH20_STONE_LEVEL_Y": [ "LevelY", "LevelY", "LevelY" ],
+      "TH20_STONE_PRIORITY_Y": [ "PriorityY", "PriorityY", "PriorityY" ],
+      "TH20_STONE_LEVEL_G": [ "LevelG", "LevelG", "LevelG" ],
+      "TH20_STONE_PRIORITY_G": [ "PriorityG", "PriorityG", "PriorityG" ],
+      "TH20_HYP_LOCK": [ "Hyper Gauge Lock", "Hyper Gauge Lock", "Hyper Gauge Lock" ],
+      "TH20_WCP_LOCK": [ "Hyper Gauge Lock", "Wonder Stone Gauge Lock", "Hyper Gauge Lock" ]
     },
 
     "sections": {
