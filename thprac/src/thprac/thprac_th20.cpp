@@ -1292,6 +1292,11 @@ namespace TH20 {
 
         uintptr_t player_stats = RVA(0x1B8670);
         *(int32_t*)(player_stats + 0x4C) = (int32_t)(thPracParam.hyper * *(int32_t*)(player_stats + 0x50));
+        if ((int32_t)thPracParam.hyper == 1) { //call the hyper start method
+            int32_t* gauge_manager_ptr = (int32_t*)RVA(0x1b8614);
+            asm_call_rel<0x134fe0, Fastcall>(*gauge_manager_ptr);
+        }
+
         *(int32_t*)(player_stats + 0x5C) = (int32_t)(thPracParam.summon * *(int32_t*)(player_stats + 0x60));
         *(int32_t*)(player_stats + 0x64) = thPracParam.priorityR;
         *(int32_t*)(player_stats + 0x68) = thPracParam.priorityB;
