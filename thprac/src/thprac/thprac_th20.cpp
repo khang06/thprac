@@ -1218,11 +1218,10 @@ namespace TH20 {
     //         pCtx->Eip = 0x45ed93;
     //     }
     // }
-    // EHOOK_DY(th20_param_reset, 0x44b610)
-    // {
-    //     thPracParam.Reset();
-    //     thSubSeasonB = -1;
-    // }
+    EHOOK_DY(th20_param_reset, 0x1294C6)
+    {
+        thPracParam.Reset();
+    }
 
     static bool sGameStarted;
     EHOOK_DY(th20_prac_menu_1, 0x12A92A)
