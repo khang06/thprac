@@ -1176,6 +1176,8 @@ namespace TH20 {
             return 0;
         else if (thPracParam.section >= 10000)
             return 0;
+        else if (thPracParam.dlg)
+            return 0;
         else
             return th_sections_bgm[thPracParam.section];
     }
@@ -1314,13 +1316,13 @@ namespace TH20 {
         *(int32_t*)(player_stats + 0x7C) = thPracParam.levelY;
         *(int32_t*)(player_stats + 0x80) = thPracParam.levelG;
     }
-    // EHOOK_DY(th20_bgm, 0x42de8c)
-    // {
-    //     if (THBGMTest()) {
-    //         PushHelper32(pCtx, 1);
-    //         pCtx->Eip = 0x42de8e;
-    //     }
-    // }
+    EHOOK_DY(th20_boss_bgm, 0x0bbfc8)
+    {
+        if (THBGMTest()) {
+            PushHelper32(pCtx, 1);
+            pCtx->Eip = RVA(0x0bbfcf);
+        }
+    }
     // EHOOK_DY(th20_rep_save, 0x448be4)
     // {
     //     char* repName = (char*)(pCtx->Esp + 0x38);
