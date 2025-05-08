@@ -536,21 +536,17 @@ namespace TH20 {
 
         Gui::GuiHotKey mMenu { "ModMenuToggle", "BACKSPACE", VK_BACK };
         Gui::GuiHotKey mMuteki { TH_MUTEKI, "F1", VK_F1, { new HookCtx(0x0FB5CC, "\x01", 1) } };
+        Gui::GuiHotKey mInfLives { TH_INFLIVES, "F2", VK_F2, { new HookCtx(0x0e3c08, "\x90\x90\x90\x90\x90\x90", 6) } };
         Gui::GuiHotKey mInfBombs { TH_INFBOMBS, "F3", VK_F3, { new HookCtx(0x0E40A2, "\x90\x90\x90", 3) } };
         Gui::GuiHotKey mInfPower { TH_INFPOWER, "F4", VK_F4, { new HookCtx(0x0E4022, "\x90\x90\x90", 3) } };
         Gui::GuiHotKey mHyperGLock { TH20_HYP_LOCK, "F5", VK_F5, { new HookCtx(0x133c15, "\x90\x90\x90", 3) } };
-        Gui::GuiHotKey mWonderStGLock { TH20_WCP_LOCK, "F6", VK_F6, { new HookCtx(0x07ab35, "\x90\x90\x90", 3) } };
+        Gui::GuiHotKey mWonderStGLock { TH20_WST_LOCK, "F6", VK_F6, { new HookCtx(0x07ab35, "\x90\x90\x90", 3) } };
         // Gui::GuiHotKey mTimeLock { TH_TIMELOCK, "F7", VK_F7, {
         //     new HookCtx(0x417965, "\xeb", 1),
         //     new HookCtx(0x41d4ef, "\x05\x8d", 2) } };
 
     public:
         Gui::GuiHotKey mElBgm { TH_EL_BGM, "F8", VK_F8 };
-        Gui::GuiHotKey mInfLives {
-            TH_INFLIVES2,
-            "F2",
-            VK_F2,
-        };
         Gui::GuiHotKey mInternalGauges { TH20_INTERNAL_GAUGES, "F9", VK_F9 };
     };
 
@@ -1258,17 +1254,6 @@ namespace TH20 {
     }
 
     HOOKSET_DEFINE(THMainHook)
-    EHOOK_DY(th20_inf_lives, 0x0B90F7)
-    {
-        if ((*(THOverlay::singleton().mInfLives))) {
-            if (!g_adv_igi_options.map_inf_life_to_no_continue) {
-                *(DWORD*)(pCtx->Ebp - 0xC) = 0;
-            } else {
-                if (*(DWORD*)(RVA2(0x5B8728)) == 0)
-                    *(DWORD*)(pCtx->Ebp - 0xC) = 0;
-            }
-        }
-    }
     EHOOK_DY(th20_everlasting_bgm, 0x028710)
     {
         int32_t retn_addr = ((int32_t*)pCtx->Esp)[0] - ingame_image_base;

@@ -10123,7 +10123,7 @@
       "TH20_STONE_LEVEL_G": [ "LevelG", "LevelG", "LevelG" ],
       "TH20_STONE_PRIORITY_G": [ "PriorityG", "PriorityG", "PriorityG" ],
       "TH20_HYP_LOCK": [ "Hyper Gauge Lock", "Hyper Gauge Lock", "Hyper Gauge Lock" ],
-      "TH20_WCP_LOCK": [ "Wonder Stone Gauge Lock", "Wonder Stone Gauge Lock", "Wonder Stone Gauge Lock" ],
+      "TH20_WST_LOCK": [ "Wonder Stone Gauge Lock", "Wonder Stone Gauge Lock", "Wonder Stone Gauge Lock" ],
       "TH20_INTERNAL_GAUGES": [ "Internal Wonder Stone State", "Internal Wonder Stone State", "Internal Wonder Stone State" ],
       "TH20_NEXT_STONE": [ "Next Stone", "Next Stone", "Next Stone" ]
     },
