@@ -507,7 +507,8 @@ namespace TH20 {
             mInfPower.SetTextOffsetRel(x_offset_1, x_offset_2);
             mHyperGLock.SetTextOffsetRel(x_offset_1, x_offset_2);
             mWonderStGLock.SetTextOffsetRel(x_offset_1, x_offset_2);
-
+            // mTimeLock.SetTextOffsetRel(x_offset_1, x_offset_2);
+            mElBgm.SetTextOffsetRel(x_offset_1, x_offset_2);
         }
         virtual void OnContentUpdate() override
         {
@@ -517,6 +518,8 @@ namespace TH20 {
             mInfPower();
             mHyperGLock();
             mWonderStGLock();
+            // mTimeLock();
+            mElBgm();
         }
         virtual void OnPreUpdate() override
         {
@@ -535,8 +538,12 @@ namespace TH20 {
         Gui::GuiHotKey mInfPower { TH_INFPOWER, "F4", VK_F4, { new HookCtx(0x0E4022, "\x90\x90\x90", 3) } };
         Gui::GuiHotKey mHyperGLock { TH20_HYP_LOCK, "F5", VK_F5, { new HookCtx(0x133c15, "\x90\x90\x90", 3) } };
         Gui::GuiHotKey mWonderStGLock { TH20_WCP_LOCK, "F6", VK_F6, { new HookCtx(0x07ab35, "\x90\x90\x90", 3) } };
+        // Gui::GuiHotKey mTimeLock { TH_TIMELOCK, "F7", VK_F7, {
+        //     new HookCtx(0x417965, "\xeb", 1),
+        //     new HookCtx(0x41d4ef, "\x05\x8d", 2) } };
 
     public:
+        Gui::GuiHotKey mElBgm { TH_EL_BGM, "F8", VK_F8 };
         Gui::GuiHotKey mInfLives {
             TH_INFLIVES2,
             "F2",
@@ -1197,26 +1204,27 @@ namespace TH20 {
             }
         }
     }
-    // EHOOK_DY(th20_everlasting_bgm, 0x45ed00)
-    // {
-    //     int32_t retn_addr = ((int32_t*)pCtx->Esp)[0];
-    //     int32_t bgm_cmd = ((int32_t*)pCtx->Esp)[1];
-    //     int32_t bgm_id = ((int32_t*)pCtx->Esp)[2];
-    //     // 4th stack item = i32 call_addr
-    // 
-    //     bool el_switch;
-    //     bool is_practice;
-    //     bool result;
-    // 
-    //     el_switch = *(THOverlay::singleton().mElBgm) && !THGuiRep::singleton().mRepStatus && (thPracParam.mode == 1) && thPracParam.section;
-    //     is_practice = (*((int32_t*)0x4a5bec) & 0x1);
-    //     result = ElBgmTest<0x43c423, 0x42d6b9, 0x43f199, 0x4409c0, 0xffffffff>(
-    //         el_switch, is_practice, retn_addr, bgm_cmd, bgm_id, 0xffffffff);
-    // 
-    //     if (result) {
-    //         pCtx->Eip = 0x45ed93;
-    //     }
-    // }
+    EHOOK_DY(th20_everlasting_bgm, 0x028710)
+    {
+        int32_t retn_addr = ((int32_t*)pCtx->Esp)[0] - ingame_image_base;
+        int32_t bgm_cmd = ((int32_t*)pCtx->Esp)[1];
+        int32_t bgm_id = ((int32_t*)pCtx->Esp)[2];
+        // 4th stack item = i32 call_addr
+
+        bool el_switch;
+        bool is_practice;
+        bool result;
+
+        el_switch = *(THOverlay::singleton().mElBgm) && !THGuiRep::singleton().mRepStatus && (thPracParam.mode == 1) && thPracParam.section;
+        is_practice = (*((int32_t*)RVA(0x1b8654)) & 0x1);
+
+        result = ElBgmTest<0xdc6a0, 0xdc70e, 0xe8978, 0xe8d28, 0xffffffff>(
+            el_switch, is_practice, retn_addr, bgm_cmd, bgm_id, 0xffffffff);
+
+        if (result) {
+            pCtx->Eip = RVA(0x028855);
+        }
+    }
     EHOOK_DY(th20_param_reset, 0x1294C6)
     {
         thPracParam.Reset();
