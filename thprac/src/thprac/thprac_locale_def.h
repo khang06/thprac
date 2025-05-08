@@ -573,11 +573,14 @@ enum th_glossary_t
     TH19_RANK_FORMAT,
     TH19_SHOW_ENEMY_HP,
     TH19_TITLE,
+    TH20_FAKE_UNLOCK_STONES,
+    TH20_FAKE_UNLOCK_STONES_DESC,
     TH20_HYPER,
     TH20_HYP_LOCK,
     TH20_INTERNAL_GAUGES,
     TH20_NEXT_STONE,
     TH20_PH,
+    TH20_PIV_OVERFLOW_FIX,
     TH20_STONE_GAUGE,
     TH20_STONE_LEVEL_B,
     TH20_STONE_LEVEL_G,
@@ -588,6 +591,8 @@ enum th_glossary_t
     TH20_STONE_PRIORITY_R,
     TH20_STONE_PRIORITY_Y,
     TH20_TITLE,
+    TH20_UNCAP_PIV,
+    TH20_UNCAP_SCORE,
     TH20_WST_LOCK,
     THPRAC_ABORT,
     THPRAC_ADMIN_RIGHTS,
@@ -1419,7 +1424,7 @@ enum th_glossary_t
     TH_WARP,
 };
 
-extern const char* th_glossary_str[3][1407];
+extern const char* th_glossary_str[3][1412];
 
 extern const th_glossary_t TH_TYPE_SELECT[13];
 

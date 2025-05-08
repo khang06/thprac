@@ -866,19 +866,21 @@ namespace TH20 {
                 // KeyHUDOpt();
                 // InfLifeOpt();
 
-                if (ImGui::Checkbox("PIV overflow fix", &pivOverflowFix))
+                if (ImGui::Checkbox(S(TH20_PIV_OVERFLOW_FIX), &pivOverflowFix))
                     th20_piv_overflow_fix.Toggle(pivOverflowFix);
                 ImGui::SameLine();
-                if (ImGui::Checkbox("Uncap PIV", &pivUncap)) {
+                if (ImGui::Checkbox(S(TH20_UNCAP_PIV), &pivUncap)) {
                     th20_piv_uncap_1.Toggle(pivUncap);
                     th20_piv_uncap_2.Toggle(pivUncap);
                 }
                 ImGui::SameLine();
-                if (ImGui::Checkbox("Uncap score", &scoreUncap))
+                if (ImGui::Checkbox(S(TH20_UNCAP_SCORE), &scoreUncap))
                     th20_score_uncap.Toggle(scoreUncap);
 
-                if (ImGui::Checkbox("Infinite stones", &infiniteStones))
+                if (ImGui::Checkbox(S(TH20_FAKE_UNLOCK_STONES), &infiniteStones))
                     th20_infinite_stones.Toggle(infiniteStones);
+                ImGui::SameLine();
+                HelpMarker(S(TH20_FAKE_UNLOCK_STONES_DESC));
 
                 ImGui::SetNextItemWidth(180.0f);
                 EndOptGroup();

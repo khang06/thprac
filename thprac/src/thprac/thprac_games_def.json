@@ -10125,7 +10125,12 @@
       "TH20_HYP_LOCK": [ "Hyper Gauge Lock", "Hyper Gauge Lock", "Hyper Gauge Lock" ],
       "TH20_WST_LOCK": [ "Wonder Stone Gauge Lock", "Wonder Stone Gauge Lock", "Wonder Stone Gauge Lock" ],
       "TH20_INTERNAL_GAUGES": [ "Internal Wonder Stone State", "Internal Wonder Stone State", "Internal Wonder Stone State" ],
-      "TH20_NEXT_STONE": [ "Next Stone", "Next Stone", "Next Stone" ]
+      "TH20_NEXT_STONE": [ "Next Stone", "Next Stone", "Next Stone" ],
+      "TH20_PIV_OVERFLOW_FIX": [ "PIV overflow fix", "PIV overflow fix", "PIV overflow fix" ],
+      "TH20_UNCAP_PIV": [ "Uncap PIV", "Uncap PIV", "Uncap PIV" ],
+      "TH20_UNCAP_SCORE": [ "Uncap score", "Uncap score", "Uncap score" ],
+      "TH20_FAKE_UNLOCK_STONES": [ "Fake unlock stones", "Fake unlock stones", "Fake unlock stones" ],
+      "TH20_FAKE_UNLOCK_STONES_DESC": [ "Allows you to select stones you haven't actually unlocked in the side slots.", "Allows you to select stones you haven't actually unlocked in the side slots.", "Allows you to select stones you haven't actually unlocked in the side slots." ]
     },
 
     "sections": {
