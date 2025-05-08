@@ -424,8 +424,8 @@ namespace TH20 {
     public:
         void CheckReplay()
         {
-            uint32_t index = GetMemContent(0x4a6f20, 0x5b48);
-            char* repName = (char*)GetMemAddr(0x4a6f20, index * 4 + 0x5b50, 0x21c);
+            uint32_t index = GetMemContent(RVA(0x1C3DB4), 0x5734);
+            char* repName = (char*)GetMemAddr(RVA(0x1C3DB4), index * 4 + 0x573C, 0x150);
             std::wstring repDir(mAppdataPath);
             repDir.append(L"\\ShanghaiAlice\\th20tr\\replay\\");
             repDir.append(mb_to_utf16(repName, 932));
@@ -1414,28 +1414,25 @@ namespace TH20 {
             pCtx->Eip = RVA(0x0bbfcf);
         }
     }
-    // EHOOK_DY(th20_rep_save, 0x448be4)
-    // {
-    //     char* repName = (char*)(pCtx->Esp + 0x38);
-    //     if (thPracParam.mode == 1) {
-    //         THSaveReplay(repName);
-    //     } else if (thPracParam.mode == 2) {
-    //         if (thPracParam.season_gauge != 3 || thPracParam.phase || thPracParam.bug_fix)
-    //             THSaveReplay(repName);
-    //     }
-    // }
-    // EHOOK_DY(th20_rep_menu_1, 0x4518a6)
-    // {
-    //     THGuiRep::singleton().State(1);
-    // }
-    // EHOOK_DY(th20_rep_menu_2, 0x4519c6)
-    // {
-    //     THGuiRep::singleton().State(2);
-    // }
-    // EHOOK_DY(th20_rep_menu_3, 0x451b86)
-    // {
-    //     THGuiRep::singleton().State(3);
-    // }
+    EHOOK_DY(th20_rep_save, 0x10D813)
+    {
+        char* repName = *(char**)(pCtx->Esp + 0x18);
+        if (thPracParam.mode == 1)
+            THSaveReplay(repName);
+    }
+    EHOOK_DY(th20_rep_menu_1, 0x124D44)
+    {
+        THGuiRep::singleton().State(1);
+    }
+    EHOOK_DY(th20_rep_menu_2, 0x12504C)
+    {
+        THGuiRep::singleton().State(2);
+    }
+    EHOOK_DY(th20_rep_menu_3, 0x1254DE)
+    {
+        THGuiRep::singleton().State(3);
+    }
+    PATCH_DY(th20_force_rep_path_str_mem_leak, 0x10D448, "\x0F\x1F\x44\x00\x00", 5);
 
     EHOOK_DY(th20_update, 0x012824)
     {
@@ -1444,7 +1441,7 @@ namespace TH20 {
     
         // Gui components update
         THGuiPrac::singleton().Update();
-        // THGuiRep::singleton().Update();
+        THGuiRep::singleton().Update();
         THOverlay::singleton().Update();
         TH20InternalGauges::singleton().Update();
         // in case boss movedown do not disabled when playing normal games
@@ -1499,7 +1496,7 @@ namespace TH20 {
 
         // Gui components creation
         THGuiPrac::singleton();
-        // THGuiRep::singleton();
+        THGuiRep::singleton();
         THOverlay::singleton();
         TH20InternalGauges::singleton();
         
