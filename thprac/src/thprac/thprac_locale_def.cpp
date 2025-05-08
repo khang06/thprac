@@ -7,7 +7,7 @@
 
 namespace THPrac {
 
-const char* th_glossary_str[3][1405]
+const char* th_glossary_str[3][1407]
 {
     {
         "",
@@ -575,6 +575,8 @@ const char* th_glossary_str[3][1405]
         "TH19 东方兽王园 〜 Unfinished Dream of All Living Ghost.",
         "Hyper",
         "Hyper Gauge Lock",
+        "Internal Wonder Stone State",
+        "Next Stone",
         "D",
         "Stone",
         "LevelB",
@@ -586,7 +588,7 @@ const char* th_glossary_str[3][1405]
         "PriorityR",
         "PriorityY",
         "TH20 东方锦上京 ～ Fossilized Wonders.",
-        "Hyper Gauge Lock",
+        "Wonder Stone Gauge Lock",
         "中止",
         "以管理员身份启动thprac",
         "启动游戏后:",
@@ -1982,6 +1984,8 @@ const char* th_glossary_str[3][1405]
         "TH19 Unfinished Dream of All Living Ghost",
         "Hyper",
         "Hyper Gauge Lock",
+        "Internal Wonder Stone State",
+        "Next Stone",
         "D",
         "Stone",
         "LevelB",
@@ -3389,6 +3393,8 @@ const char* th_glossary_str[3][1405]
         "TH19 東方獣王園 〜 Unfinished Dream of All Living Ghost.",
         "Hyper",
         "Hyper Gauge Lock",
+        "Internal Wonder Stone State",
+        "Next Stone",
         "D",
         "Stone",
         "LevelB",
@@ -3400,7 +3406,7 @@ const char* th_glossary_str[3][1405]
         "PriorityR",
         "PriorityY",
         "東方錦上京 ～ Fossilized Wonders.",
-        "Hyper Gauge Lock",
+        "Wonder Stone Gauge Lock",
         "中止",
         "管理者権限でthpracを起動する",
         "ゲーム起動後:",

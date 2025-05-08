@@ -509,6 +509,7 @@ namespace TH20 {
             mWonderStGLock.SetTextOffsetRel(x_offset_1, x_offset_2);
             // mTimeLock.SetTextOffsetRel(x_offset_1, x_offset_2);
             mElBgm.SetTextOffsetRel(x_offset_1, x_offset_2);
+            mInternalGauges.SetTextOffsetRel(x_offset_1, x_offset_2);
         }
         virtual void OnContentUpdate() override
         {
@@ -520,6 +521,7 @@ namespace TH20 {
             mWonderStGLock();
             // mTimeLock();
             mElBgm();
+            mInternalGauges();
         }
         virtual void OnPreUpdate() override
         {
@@ -549,24 +551,20 @@ namespace TH20 {
             "F2",
             VK_F2,
         };
+        Gui::GuiHotKey mInternalGauges { TH20_INTERNAL_GAUGES, "F9", VK_F9 };
     };
 
-    class TH20InGameInfo : public Gui::GameGuiWnd {
-        TH20InGameInfo() noexcept
+    class TH20InternalGauges : public Gui::GameGuiWnd {
+        TH20InternalGauges() noexcept
         {
             SetTitle("igi");
-            SetFade(0.9f, 0.9f);
-            SetPosRel(900.0f / 1280.0f, 500.0f / 960.0f);
-            SetSizeRel(340.0f / 1280.0f, 0.0f);
+            SetFade(0.75f, 0.75f);
+            SetPosRel((1056.0f - 300.0f / 2.0) / 1280.0f, (700.0f - 192.0f / 2.0) / 960.0f);
+            SetSizeRel(300.0f / 1280.0f, 192.0f / 960.0f);
             SetWndFlag(ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav | 0);
             OnLocaleChange();
         }
-        SINGLETON(TH20InGameInfo);
-
-    public:
-        int32_t mMissCount;
-        int32_t mBombCount;
-        int32_t mReleaseCount;
+        SINGLETON(TH20InternalGauges);
 
     protected:
         virtual void OnLocaleChange() override
@@ -593,29 +591,93 @@ namespace TH20 {
 
         virtual void OnContentUpdate() override
         {
+            static const ImVec4 STONE_COLORS[] = {
+                {1.0f, 0.25f, 0.25f, 1.0f},
+                {0.25f, 0.25f, 1.0f, 1.0f},
+                {1.0f, 1.0f, 0.25f, 1.0f},
+                {0.0f, 1.0f, 0.25f, 1.0f},
+            };
+            static constexpr const char* STONE_NAMES[] = {
+                "Red",
+                "Blue",
+                "Yellow",
+                "Green",
+            };
+            static constexpr const char* STONE_NAMES_SHORT[] = {
+                "R",
+                "B",
+                "Y",
+                "G",
+            };
+
+            uintptr_t player_stats = RVA(0x1B8670);
+            int32_t red_priority = *(int32_t*)(player_stats + 0x64);
+            int32_t blue_priority = *(int32_t*)(player_stats + 0x68);
+            int32_t yellow_priority = *(int32_t*)(player_stats + 0x70);
+            int32_t green_priority = *(int32_t*)(player_stats + 0x6C);
+
+            int32_t next_stone = *(int32_t*)(player_stats + 0x98);
+            bool locked = true;
+            if (next_stone < 0) {
+                locked = false;
+
+                next_stone = 0;
+                int32_t max_priority = red_priority;
+                if (blue_priority > max_priority) {
+                    next_stone = 1;
+                    max_priority = blue_priority;
+                }
+                if (yellow_priority > max_priority) {
+                    next_stone = 2;
+                    max_priority = yellow_priority;
+                }
+                if (green_priority > max_priority) {
+                    next_stone = 3;
+                    max_priority = green_priority;
+                }
+            }
+
+            auto& style = ImGui::GetStyle();
+            auto old_col = style.Colors[ImGuiCol_Text];
+
             ImGui::Columns(2);
-            ImGui::Text(S(THPRAC_INGAMEINFO_MISS_COUNT));
+            style.Colors[ImGuiCol_Text] = STONE_COLORS[next_stone];
+            ImGui::Text(S(TH20_NEXT_STONE));
             ImGui::NextColumn();
-            ImGui::Text("%8d", mMissCount);
+            ImGui::Text("%s%s", STONE_NAMES_SHORT[next_stone], locked ? " (LOCKED)" : "");
             ImGui::NextColumn();
-            ImGui::Text(S(THPRAC_INGAMEINFO_BOMB_COUNT));
+            style.Colors[ImGuiCol_Text] = STONE_COLORS[0];
+            ImGui::Text(STONE_NAMES[0]);
             ImGui::NextColumn();
-            ImGui::Text("%8d", mBombCount);
+            ImGui::Text("%d", red_priority);
             ImGui::NextColumn();
-            ImGui::Text(S(THPRAC_INGAMEINFO_16_RELEASE_COUNT));
+            style.Colors[ImGuiCol_Text] = STONE_COLORS[1];
+            ImGui::Text(STONE_NAMES[1]);
             ImGui::NextColumn();
-            ImGui::Text("%8d", mReleaseCount);
+            ImGui::Text("%d", blue_priority);
+            ImGui::NextColumn();
+            style.Colors[ImGuiCol_Text] = STONE_COLORS[2];
+            ImGui::Text(STONE_NAMES[2]);
+            ImGui::NextColumn();
+            ImGui::Text("%d", yellow_priority);
+            ImGui::NextColumn();
+            style.Colors[ImGuiCol_Text] = STONE_COLORS[3];
+            ImGui::Text(STONE_NAMES[3]);
+            ImGui::NextColumn();
+            ImGui::Text("%d", green_priority);
+
+            style.Colors[ImGuiCol_Text] = old_col;
         }
 
         virtual void OnPreUpdate() override
         {
-            // if (*(THOverlay::singleton().mInGameInfo) && *(DWORD*)(RVA2(0x5B85EC))) {
-            //     SetPosRel(900.0f / 1280.0f, 500.0f / 960.0f);
-            //     SetSizeRel(340.0f / 1280.0f, 0.0f);
-            //     Open();
-            // } else {
-            //     Close();
-            // }
+            if (*(THOverlay::singleton().mInternalGauges) && *(DWORD*)(RVA2(0x5B85EC))) {
+                SetPosRel((1056.0f - 300.0f / 2.0) / 1280.0f, (700.0f - 192.0f / 2.0) / 960.0f);
+                SetSizeRel(300.0f / 1280.0f, 192.0f / 960.0f);
+                Open();
+            } else {
+                Close();
+            }
         }
 
     public:
@@ -1365,7 +1427,7 @@ namespace TH20 {
         THGuiPrac::singleton().Update();
         // THGuiRep::singleton().Update();
         THOverlay::singleton().Update();
-        // TH16InGameInfo::singleton().Update();
+        TH20InternalGauges::singleton().Update();
         // in case boss movedown do not disabled when playing normal games
         // {
         //     if (THAdvOptWnd::singleton().forceBossMoveDown) {
@@ -1420,11 +1482,10 @@ namespace TH20 {
         THGuiPrac::singleton();
         // THGuiRep::singleton();
         THOverlay::singleton();
-        // TH16InGameInfo::singleton();
+        TH20InternalGauges::singleton();
         
         // Hooks
         THMainHook::singleton().EnableAllHooks();
-        // THInGameInfo::singleton().EnableAllHooks();
         Gui::ImplDX9NewFrame();
         //  Reset thPracParam
         thPracParam.Reset();
