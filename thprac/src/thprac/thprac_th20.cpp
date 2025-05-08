@@ -609,8 +609,8 @@ namespace TH20 {
             uintptr_t player_stats = RVA(0x1B8670);
             int32_t red_priority = *(int32_t*)(player_stats + 0x64);
             int32_t blue_priority = *(int32_t*)(player_stats + 0x68);
-            int32_t yellow_priority = *(int32_t*)(player_stats + 0x70);
-            int32_t green_priority = *(int32_t*)(player_stats + 0x6C);
+            int32_t yellow_priority = *(int32_t*)(player_stats + 0x6C);
+            int32_t green_priority = *(int32_t*)(player_stats + 0x70);
 
             int32_t next_stone = *(int32_t*)(player_stats + 0x98);
             bool locked = true;
@@ -1293,6 +1293,10 @@ namespace TH20 {
                 sGameStarted = true;
                 asm_call_rel<0x238C0, Thiscall>(*(uint32_t*)RVA(0x1C3DB4) + 0x154, 0);
                 THGuiPrac::singleton().State(3);
+            } else if (Gui::InGameInputGet('X')) {
+                THGuiPrac::singleton().State(4);
+                asm_call_rel<0x12B640, Thiscall>(*(uint32_t*)RVA(0x1C3DB4), 2);
+                pCtx->Eip = RVA(0x12AC10);
             } else {
                 THGuiPrac::singleton().State(2);
                 pCtx->Eip = RVA(0x12AC10);
@@ -1303,6 +1307,11 @@ namespace TH20 {
     {
         if (THGuiPrac::singleton().IsOpen())
             pCtx->Eip = RVA(0x12AC10);
+    }
+    EHOOK_DY(th20_stone_menu_fade, 0x11A740)
+    {
+        if (THGuiPrac::singleton().IsOpen())
+            pCtx->Eip = RVA(0x11A763);
     }
     EHOOK_DY(th20_prac_menu_set_stage, 0x12AB34)
     {
