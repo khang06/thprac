@@ -693,6 +693,7 @@ namespace TH20 {
             pCtx->Esi = (int32_t)(uh_oh / piv_divisor) + half_piv_base;
             pCtx->Eip = RVA(0xC6034);
         }
+        PATCH_ST(th20_infinite_stones, 0x11A250, "\xEB", 1);
 
     public:
 
@@ -700,6 +701,7 @@ namespace TH20 {
 
     private:
         bool pivOverflowFix = false;
+        bool infiniteStones = false;
         HookCtx* listIterUnlinkFix = nullptr;
 
         void MasterDisableInit()
@@ -784,6 +786,7 @@ namespace TH20 {
             MasterDisableInit();
 
             th20_piv_overflow_fix.Setup();
+            th20_infinite_stones.Setup();
 
             // thcrap base_tsa already patches this to fix the crash, don't try to rehook it if it's being used
             if (*(uint32_t*)RVA(0x11AD0) == 0x51EC8B55) {
@@ -856,6 +859,8 @@ namespace TH20 {
 
                 if (ImGui::Checkbox("PIV overflow fix", &pivOverflowFix))
                     th20_piv_overflow_fix.Toggle(pivOverflowFix);
+                if (ImGui::Checkbox("Infinite stones", &infiniteStones))
+                    th20_infinite_stones.Toggle(infiniteStones);
 
                 ImGui::SetNextItemWidth(180.0f);
                 EndOptGroup();
