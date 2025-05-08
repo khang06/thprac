@@ -1414,11 +1414,20 @@ namespace TH20 {
             pCtx->Eip = RVA(0x0bbfcf);
         }
     }
+
+    static char* sReplayPath;
     EHOOK_DY(th20_rep_save, 0x10D813)
     {
-        char* repName = *(char**)(pCtx->Esp + 0x18);
-        if (thPracParam.mode == 1)
-            THSaveReplay(repName);
+        if (sReplayPath) {
+            if (thPracParam.mode == 1)
+                THSaveReplay(sReplayPath);
+            free(sReplayPath);
+            sReplayPath = nullptr;
+        }
+    }
+    EHOOK_DY(th20_rep_get_path, 0x10D3E1)
+    {
+        sReplayPath = _strdup((char*)pCtx->Edx);
     }
     EHOOK_DY(th20_rep_menu_1, 0x124D44)
     {
@@ -1432,7 +1441,6 @@ namespace TH20 {
     {
         THGuiRep::singleton().State(3);
     }
-    PATCH_DY(th20_force_rep_path_str_mem_leak, 0x10D448, "\x0F\x1F\x44\x00\x00", 5);
 
     EHOOK_DY(th20_update, 0x012824)
     {
@@ -1533,6 +1541,7 @@ namespace TH20 {
 }
 
 bool TH20::THMainHook::sGameStarted = false;
+char* TH20::THMainHook::sReplayPath = nullptr;
 
 void TH20Init()
 {
