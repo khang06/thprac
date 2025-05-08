@@ -579,7 +579,6 @@ enum th_glossary_t
     TH20_HYP_LOCK,
     TH20_INTERNAL_GAUGES,
     TH20_NEXT_STONE,
-    TH20_PH,
     TH20_PIV_OVERFLOW_FIX,
     TH20_STONE_GAUGE,
     TH20_STONE_LEVEL_B,
@@ -1424,7 +1423,7 @@ enum th_glossary_t
     TH_WARP,
 };
 
-extern const char* th_glossary_str[3][1412];
+extern const char* th_glossary_str[3][1411];
 
 extern const th_glossary_t TH_TYPE_SELECT[13];
 
