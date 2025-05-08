@@ -696,6 +696,7 @@ namespace TH20 {
         }
         PATCH_ST(th20_piv_uncap_1, 0xAA775, "\x89\xD0\x0F\x1F\x00", 5);
         PATCH_ST(th20_piv_uncap_2, 0xB9316, "\x89\xD0\x0F\x1F\x00", 5);
+        PATCH_ST(th20_score_uncap, 0xE3E72, "\xEB", 1);
         PATCH_ST(th20_infinite_stones, 0x11A250, "\xEB", 1);
 
     public:
@@ -705,6 +706,7 @@ namespace TH20 {
     private:
         bool pivOverflowFix = false;
         bool pivUncap = false;
+        bool scoreUncap = false;
         bool infiniteStones = false;
         HookCtx* listIterUnlinkFix = nullptr;
 
@@ -792,6 +794,7 @@ namespace TH20 {
             th20_piv_overflow_fix.Setup();
             th20_piv_uncap_1.Setup();
             th20_piv_uncap_2.Setup();
+            th20_score_uncap.Setup();
             th20_infinite_stones.Setup();
 
             // thcrap base_tsa already patches this to fix the crash, don't try to rehook it if it's being used
@@ -870,6 +873,9 @@ namespace TH20 {
                     th20_piv_uncap_1.Toggle(pivUncap);
                     th20_piv_uncap_2.Toggle(pivUncap);
                 }
+                ImGui::SameLine();
+                if (ImGui::Checkbox("Uncap score", &scoreUncap))
+                    th20_score_uncap.Toggle(scoreUncap);
 
                 if (ImGui::Checkbox("Infinite stones", &infiniteStones))
                     th20_infinite_stones.Toggle(infiniteStones);
