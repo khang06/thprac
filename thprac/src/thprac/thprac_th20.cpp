@@ -507,7 +507,7 @@ namespace TH20 {
             mInfPower.SetTextOffsetRel(x_offset_1, x_offset_2);
             mHyperGLock.SetTextOffsetRel(x_offset_1, x_offset_2);
             mWonderStGLock.SetTextOffsetRel(x_offset_1, x_offset_2);
-            // mTimeLock.SetTextOffsetRel(x_offset_1, x_offset_2);
+            mTimeLock.SetTextOffsetRel(x_offset_1, x_offset_2);
             mElBgm.SetTextOffsetRel(x_offset_1, x_offset_2);
             mInternalGauges.SetTextOffsetRel(x_offset_1, x_offset_2);
         }
@@ -519,7 +519,7 @@ namespace TH20 {
             mInfPower();
             mHyperGLock();
             mWonderStGLock();
-            // mTimeLock();
+            mTimeLock();
             mElBgm();
             mInternalGauges();
         }
@@ -541,9 +541,10 @@ namespace TH20 {
         Gui::GuiHotKey mInfPower { TH_INFPOWER, "F4", VK_F4, { new HookCtx(0x0E4022, "\x90\x90\x90", 3) } };
         Gui::GuiHotKey mHyperGLock { TH20_HYP_LOCK, "F5", VK_F5, { new HookCtx(0x133c15, "\x90\x90\x90", 3) } };
         Gui::GuiHotKey mWonderStGLock { TH20_WST_LOCK, "F6", VK_F6, { new HookCtx(0x07ab35, "\x90\x90\x90", 3) } };
-        // Gui::GuiHotKey mTimeLock { TH_TIMELOCK, "F7", VK_F7, {
-        //     new HookCtx(0x417965, "\xeb", 1),
-        //     new HookCtx(0x41d4ef, "\x05\x8d", 2) } };
+        Gui::GuiHotKey mTimeLock { TH_TIMELOCK, "F7", VK_F7, {
+            new HookCtx(0x08a5fd, "\xeb", 1),
+            new HookCtx(0x0a8ece, "\x21", 1)
+        } };
 
     public:
         Gui::GuiHotKey mElBgm { TH_EL_BGM, "F8", VK_F8 };
