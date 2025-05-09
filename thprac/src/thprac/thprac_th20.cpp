@@ -153,6 +153,7 @@ namespace TH20 {
             case 3:
                 SetFade(0.8f, 0.1f);
                 Close();
+                //*mNavFocus = 0;
 
                 // Fill Param
                 thPracParam.mode = *mMode;
@@ -183,6 +184,7 @@ namespace TH20 {
                 break;
             case 4:
                 Close();
+                //*mNavFocus = 0;
                 break;
             default:
                 break;
@@ -299,6 +301,8 @@ namespace TH20 {
                 mScore();
                 mScore.RoundDown(10);
             }
+
+            //mNavFocus();
         }
         int CalcSection()
         {
@@ -403,6 +407,14 @@ namespace TH20 {
         Gui::GuiSlider<int32_t, ImGuiDataType_S32> mPriorityY { TH20_STONE_PRIORITY_Y, 0, 1000 };
         Gui::GuiSlider<int32_t, ImGuiDataType_S32> mLevelG { TH20_STONE_LEVEL_G, 1, 5 };
         Gui::GuiSlider<int32_t, ImGuiDataType_S32> mPriorityG { TH20_STONE_PRIORITY_G, 0, 1000 };
+
+        /* Gui::GuiNavFocus mNavFocus { TH_STAGE, TH_MODE, TH_WARP, TH_DLG,
+            TH_MID_STAGE, TH_END_STAGE, TH_NONSPELL, TH_SPELL, TH_PHASE, TH_CHAPTER,
+            TH_SCORE, TH_LIFE, TH_LIFE_FRAGMENT, TH_BOMB, TH_BOMB_FRAGMENT,
+            TH_POWER, TH20_HYPER, TH20_STONE_GAUGE, TH20_STONE_LEVEL_R, TH20_STONE_PRIORITY_R,
+            TH20_STONE_LEVEL_B, TH20_STONE_PRIORITY_B, TH20_STONE_LEVEL_Y, TH20_STONE_PRIORITY_Y,
+            TH20_STONE_LEVEL_G, TH20_STONE_PRIORITY_G
+        };*/
 
         int mChapterSetup[7][2] {
             { 3, 2 },
@@ -1463,7 +1475,7 @@ namespace TH20 {
         // }
         // if (g_adv_igi_options.show_keyboard_monitor && *(DWORD*)(0x004A6EF8))
         //     KeysHUD(16, { 1280.0f, 0.0f }, { 840.0f, 0.0f }, g_adv_igi_options.keyboard_style);
-        bool drawCursor = THAdvOptWnd::StaticUpdate();
+        bool drawCursor = THAdvOptWnd::StaticUpdate() || THGuiPrac::singleton().IsOpen();
         // bool drawCursor = false;
         GameGuiEnd(drawCursor);
     }
