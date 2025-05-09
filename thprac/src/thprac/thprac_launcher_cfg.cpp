@@ -2340,10 +2340,6 @@ private:
         ImGui::Separator();
         if (ImGui::CollapsingHeader(S(THPRAC_SETTING_UPDATE))) {
             mCheckUpdateTiming.Gui(S(THPRAC_CHECK_UPDATE_WHEN), S(THPRAC_CHECK_UPDATE_WHEN_OPTION));
-            int time = 2;
-            mCheckUpdateTiming.Set(time);
-            ImGui::SameLine();
-            GuiHelpMarker(S(THPRAC_CHECK_UPDATE_WHEN_OPTION_2));
             if (mCheckUpdateTiming.Get() == 2) {
                 ImGui::BeginDisabled();
                 mUpdateWithoutConfirm.Gui(S(THPRAC_UPDATE_WITHOUT_CONFIRMATION));

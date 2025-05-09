@@ -1,11 +1,11 @@
 {
-    "version": [2, 0, 0, 0],
+    "version": [ 2, 1, 0, 0 ],
     "description": [
         "Changelog: https://github.com/khang06/thprac/releases/latest",
         " ",
-        " "   
+        " "
     ],
-    "direct_link": "https://github.com/touhouworldcup/thprac/releases/download/fw-v2.0.0.0/thprac-th20tr.v2.0.0.0.exe",
+    "direct_link": "https://github.com/khang06/thprac/releases/download/fw-v2.1.0.0/thprac-th20tr.v2.1.0.0.exe",
     "downloads": {
         "GitHub": "https://github.com/khang06/thprac/releases/latest"
     }
