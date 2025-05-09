@@ -1960,6 +1960,12 @@ public:
         if (!currentGame) {
             return 0;
         }
+
+        if (currentGame->signature.idStr != "th20tr") {
+            MessageBoxA(nullptr, S(TH20TR_OTHER_GAME_WARN), S(THPRAC_PR_ERROR), MB_OK | MB_ICONERROR | MB_SYSTEMMODAL);
+            // return 0;
+        }
+
         auto& currentInst = currentGame->instances[currentGame->selected];
         auto currentCatagory = currentGame->signature.catagory;
         auto currentInstPath = utf8_to_utf16(currentInst.path.c_str());

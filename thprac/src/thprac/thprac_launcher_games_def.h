@@ -77,7 +77,6 @@ extern void TH19Init();
 extern void TH20Init();
 
 static THKnownGame gKnownGames[] {
-    /*
     { "th06",
         TYPE_CHINESE,
         { 0x6c2e0eb5, 0x6bb9bce8,
@@ -190,7 +189,6 @@ static THKnownGame gKnownGames[] {
         TYPE_NYASAMA,
         { 0x71115032, 0x3a4d05bd,
             0x8dfc8ba4, 0xa476dc6f } },
-    */
     { "th20tr",
         TYPE_ORIGINAL,
         { 0x6378d64, 0x70f6e0ae,
@@ -199,7 +197,6 @@ static THKnownGame gKnownGames[] {
 };
 
 static THGameSig gGameDefs[] {
-    /*
     { "alcostg",
         nullptr,
         ALCOSTG_TITLE,
@@ -592,7 +589,6 @@ static THGameSig gGameDefs[] {
                 0x0e2e, 0x1d90, 0xb748, 0x8d5c, 0x1fbb },
             { 0x1ef2d050, 0xbddd8da2,
                 0x56cedb87, 0xe674cd2c } } },
-    */
     { "th20tr",
         nullptr,//steam id
         TH20_TITLE,

@@ -573,6 +573,7 @@ enum th_glossary_t
     TH19_RANK_FORMAT,
     TH19_SHOW_ENEMY_HP,
     TH19_TITLE,
+    TH20TR_OTHER_GAME_WARN,
     TH20_FAKE_UNLOCK_STONES,
     TH20_FAKE_UNLOCK_STONES_DESC,
     TH20_HYPER,
@@ -1423,7 +1424,7 @@ enum th_glossary_t
     TH_WARP,
 };
 
-extern const char* th_glossary_str[3][1411];
+extern const char* th_glossary_str[3][1412];
 
 extern const th_glossary_t TH_TYPE_SELECT[13];
 

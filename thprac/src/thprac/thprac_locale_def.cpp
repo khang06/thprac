@@ -7,7 +7,7 @@
 
 namespace THPrac {
 
-const char* th_glossary_str[3][1411]
+const char* th_glossary_str[3][1412]
 {
     {
         "",
@@ -573,6 +573,7 @@ const char* th_glossary_str[3][1411]
         "Rank: %d",
         "显示敌人HP",
         "TH19 东方兽王园 〜 Unfinished Dream of All Living Ghost.",
+        "这是一个用于东方20试玩版的实验性 thprac 构建，可能无法正常运行于其他游戏。使用风险由用户自行承担。",
         "假解锁宝石",
         "侧槽可选未解锁宝石。",
         "异变攻击",
@@ -1986,6 +1987,7 @@ const char* th_glossary_str[3][1411]
         "Rank: %d",
         "Show Enemy HP",
         "TH19 Unfinished Dream of All Living Ghost",
+        "This is an experimental thprac build for the Touhou 20 demo and may not work properly with other games. Use at your own risk.",
         "Fake unlock stones",
         "Allows you to select stones you haven't actually unlocked in the side slots.",
         "Hyper",
@@ -3399,6 +3401,7 @@ const char* th_glossary_str[3][1411]
         "ランク: %d",
         "敵のHPを表示する",
         "TH19 東方獣王園 〜 Unfinished Dream of All Living Ghost.",
+        "これは東方20体験版用の実験的なthpracビルドであり、他のゲームでは正常に動作しない可能性があります。使用は自己責任でお願いします。",
         "未解放ストーン使用",
         "未解放ストーンをサイドスロットに設定可能。",
         "異変攻撃",

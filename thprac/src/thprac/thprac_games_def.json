@@ -496,6 +496,7 @@
         "設定したら、「ゲーム」タブで対応するゲームタイトルをクリックすると、このゲームが直接開始されます。 （ゲームタイトルを右クリックして詳細ページに入ります）"
       ],
       "THPRAC_GAMES_LAUNCH_GAME": [ "开始游戏", "Start game", "ゲームを開始" ],
+        "TH20TR_OTHER_GAME_WARN": [ "这是一个用于东方20试玩版的实验性 thprac 构建，可能无法正常运行于其他游戏。使用风险由用户自行承担。", "This is an experimental thprac build for the Touhou 20 demo and may not work properly with other games. Use at your own risk.", "これは東方20体験版用の実験的なthpracビルドであり、他のゲームでは正常に動作しない可能性があります。使用は自己責任でお願いします。" ],
       "THPRAC_GAMES_LAUNCHING": [ "少女祈祷中", "Girls are now praying", "少女祈祷中" ],
       "THPRAC_GAMES_LAUNCH_ERR": [ "启动游戏时发生了错误。", "An error occurred while starting the game.", "ゲームの開始中にエラーが発生しました。" ],
       "THPRAC_GAMES_MISSING": [ "少女神隐中...", "Girls are now missing...", "少女神隠中..." ],
