@@ -710,6 +710,7 @@ namespace TH20 {
         PATCH_ST(th20_piv_uncap_2, 0xB9316, "\x89\xD0\x0F\x1F\x00", 5);
         PATCH_ST(th20_score_uncap, 0xE3E72, "\xEB", 1);
         PATCH_ST(th20_infinite_stones, 0x11A250, "\xEB", 1);
+        PATCH_ST(th20_hitbox_scale_fix, 0x1B8758, "\x64", 1);
 
     public:
 
@@ -720,6 +721,7 @@ namespace TH20 {
         bool pivUncap = false;
         bool scoreUncap = false;
         bool infiniteStones = false;
+        bool plHitboxScaleFix = false;
         HookCtx* listIterUnlinkFix = nullptr;
 
         void MasterDisableInit()
@@ -808,6 +810,7 @@ namespace TH20 {
             th20_piv_uncap_2.Setup();
             th20_score_uncap.Setup();
             th20_infinite_stones.Setup();
+            th20_hitbox_scale_fix.Setup();
 
             // thcrap base_tsa already patches this to fix the crash, don't try to rehook it if it's being used
             if (*(uint32_t*)RVA(0x11AD0) == 0x51EC8B55) {
@@ -893,6 +896,11 @@ namespace TH20 {
                     th20_infinite_stones.Toggle(infiniteStones);
                 ImGui::SameLine();
                 HelpMarker(S(TH20_FAKE_UNLOCK_STONES_DESC));
+                ImGui::SameLine();
+                if (ImGui::Checkbox(S(TH20_FIX_HITBOX), &plHitboxScaleFix))
+                    th20_hitbox_scale_fix.Toggle(plHitboxScaleFix);
+                ImGui::SameLine();
+                HelpMarker(S(TH20_FIX_HITBOX_DESC));
 
                 ImGui::SetNextItemWidth(180.0f);
                 EndOptGroup();

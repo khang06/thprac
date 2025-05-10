@@ -10134,6 +10134,12 @@
         "侧槽可选未解锁宝石。",
         "Allows you to select stones you haven't actually unlocked in the side slots.",
         "未解放ストーンをサイドスロットに設定可能。"
+      ],
+      "TH20_FIX_HITBOX": [ "修复玩家判定点缩放", "Fix player hitbox scale", "プレイヤーの当たり判定のスケールを修正" ],
+      "TH20_FIX_HITBOX_DESC": [
+        "将你的判定点从当前的0%（点状极小）恢复为100%（原始大小）。",
+        "Makes your hitbox 100% scale (original size) instead of 0% (current size, point-like).",
+        " 現在の0%（点のように小さい）から100%（本来のサイズ）に戻します。"
       ]
     },
 

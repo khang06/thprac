@@ -576,6 +576,8 @@ enum th_glossary_t
     TH20TR_OTHER_GAME_WARN,
     TH20_FAKE_UNLOCK_STONES,
     TH20_FAKE_UNLOCK_STONES_DESC,
+    TH20_FIX_HITBOX,
+    TH20_FIX_HITBOX_DESC,
     TH20_HYPER,
     TH20_HYP_LOCK,
     TH20_INTERNAL_GAUGES,
@@ -1424,7 +1426,7 @@ enum th_glossary_t
     TH_WARP,
 };
 
-extern const char* th_glossary_str[3][1412];
+extern const char* th_glossary_str[3][1414];
 
 extern const th_glossary_t TH_TYPE_SELECT[13];
 

@@ -7,7 +7,7 @@
 
 namespace THPrac {
 
-const char* th_glossary_str[3][1412]
+const char* th_glossary_str[3][1414]
 {
     {
         "",
@@ -576,6 +576,8 @@ const char* th_glossary_str[3][1412]
         "这是一个用于东方20试玩版的实验性 thprac 构建，可能无法正常运行于其他游戏。使用风险由用户自行承担。",
         "假解锁宝石",
         "侧槽可选未解锁宝石。",
+        "修复玩家判定点缩放",
+        "将你的判定点从当前的0%（点状极小）恢复为100%（原始大小）。",
         "异变攻击",
         "异变攻击锁计",
         "异变石内部状态",
@@ -1990,6 +1992,8 @@ const char* th_glossary_str[3][1412]
         "This is an experimental thprac build for the Touhou 20 demo and may not work properly with other games. Use at your own risk.",
         "Fake unlock stones",
         "Allows you to select stones you haven't actually unlocked in the side slots.",
+        "Fix player hitbox scale",
+        "Makes your hitbox 100% scale (original size) instead of 0% (current size, point-like).",
         "Hyper",
         "Hyper Gauge Lock",
         "Internal Wonder Stone State",
@@ -3404,6 +3408,8 @@ const char* th_glossary_str[3][1412]
         "これは東方20体験版用の実験的なthpracビルドであり、他のゲームでは正常に動作しない可能性があります。使用は自己責任でお願いします。",
         "未解放ストーン使用",
         "未解放ストーンをサイドスロットに設定可能。",
+        "プレイヤーの当たり判定のスケールを修正",
+        " 現在の0%（点のように小さい）から100%（本来のサイズ）に戻します。",
         "異変攻撃",
         "異変攻撃計固定",
         "異変石内部状態",
