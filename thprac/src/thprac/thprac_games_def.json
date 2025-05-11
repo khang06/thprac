@@ -10114,6 +10114,7 @@
     "glossary": {
       "TH20_HYPER": [ "异变攻击", "Hyper", "異変攻撃" ],
       "TH20_STONE_GAUGE": [ "异变石", "Summon", "異変石" ],
+      "TH20_STONE_GAUGE_MAX": [ "异变石阈值", "Sum. Max", "異変石閾値"],
       "TH20_STONE_LEVEL_R": [ "红石等级", "LevelR", "レベルR" ],
       "TH20_STONE_PRIORITY_R": [ "优先红", "PriorityR", "優先R" ],
       "TH20_STONE_LEVEL_B": [ "蓝石等级", "LevelB", "レベルB" ],

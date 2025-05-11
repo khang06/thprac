@@ -26,6 +26,7 @@ namespace TH20 {
 
         float hyper;
         float stone;
+        int32_t stoneMax;
         int32_t levelR;
         int32_t priorityR;
         int32_t levelB;
@@ -127,6 +128,7 @@ namespace TH20 {
             *mBomb = 9;
             *mPower = 400;
             *mValue = 0;
+            *mStoneMax = 1100;
             *mLevelR = 0;
             *mLevelB = 0;
             *mLevelY = 0;
@@ -174,6 +176,7 @@ namespace TH20 {
 
                 thPracParam.hyper = *mHyper / 10000.0f;
                 thPracParam.stone = *mStone / 10000.0f;
+                thPracParam.stoneMax = *mStoneMax;
                 thPracParam.levelR = *mLevelR;
                 thPracParam.priorityR = *mLevelR;
                 thPracParam.levelB = *mLevelB;
@@ -260,6 +263,7 @@ namespace TH20 {
                 mValue(value_str.c_str());
                 mHyper(std::format("{:.2f} %%", (float)(*mHyper) / 100.0f).c_str());
                 mStone(std::format("{:.2f} %%", (float)(*mStone) / 100.0f).c_str());
+                mStoneMax();
 
                 // TODO: This is ass
                 ImGui::Columns(2);
@@ -398,6 +402,7 @@ namespace TH20 {
 
         Gui::GuiSlider<int, ImGuiDataType_S32> mHyper { TH20_HYPER, 0, 10000, 1, 1000 };
         Gui::GuiSlider<int, ImGuiDataType_S32> mStone { TH20_STONE_GAUGE, 0, 10000, 1, 1000 };
+        Gui::GuiSlider<int, ImGuiDataType_S32> mStoneMax { TH20_STONE_GAUGE_MAX, 0, 5000, 1, 100 };
         Gui::GuiSlider<int32_t, ImGuiDataType_S32> mLevelR { TH20_STONE_LEVEL_R, 0, 5 };
         Gui::GuiSlider<int32_t, ImGuiDataType_S32> mPriorityR { TH20_STONE_PRIORITY_R, 0, 1000 };
         Gui::GuiSlider<int32_t, ImGuiDataType_S32> mLevelB { TH20_STONE_LEVEL_B, 0, 5 };
@@ -1372,7 +1377,8 @@ namespace TH20 {
             asm_call_rel<0x134fe0, Fastcall>(*gauge_manager_ptr);
         }
 
-        *(int32_t*)(player_stats + 0x5C) = (int32_t)(thPracParam.stone * *(int32_t*)(player_stats + 0x60));
+        *(int32_t*)(player_stats + 0x5C) = (int32_t)(thPracParam.stone * thPracParam.stoneMax);
+        *(int32_t*)(player_stats + 0x60) = thPracParam.stoneMax;
         *(int32_t*)(player_stats + 0x64) = thPracParam.priorityR;
         *(int32_t*)(player_stats + 0x68) = thPracParam.priorityB;
         *(int32_t*)(player_stats + 0x6C) = thPracParam.priorityY;
