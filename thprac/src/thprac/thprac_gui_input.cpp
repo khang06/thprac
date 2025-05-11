@@ -94,7 +94,7 @@ namespace THPrac
 			case VK_LSHIFT:
 				return __GI_Gen2_Reg2Test1(0x8);
 			case 'X': // Z
-				return __GI_Gen2_Reg2Test1(0x2) || __GI_Gen2_Reg2Test1(0x4); // TODO: Is this right for the other games???
+				return __GI_Gen2_Reg2Test1(0x6); // TODO: Is this right for the other games???
 			case 'Z': // Z
 				return __GI_Gen2_Reg2Test1(0x1);
 			default:

@@ -2,6 +2,8 @@
 #include "thprac_utils.h"
 #include <format>
 
+#include "utils/wininternal.h"
+
 // WTF Microsoft
 #undef hyper
 
@@ -108,7 +110,7 @@ namespace TH20 {
                 AddJsonValue(priorityG);
 
                 ReturnJson();
-            } 
+            }
 
             CreateJson();
             jalloc; // Dummy usage to silence C4189
@@ -153,7 +155,6 @@ namespace TH20 {
             case 3:
                 SetFade(0.8f, 0.1f);
                 Close();
-                //*mNavFocus = 0;
 
                 // Fill Param
                 thPracParam.mode = *mMode;
@@ -184,7 +185,6 @@ namespace TH20 {
                 break;
             case 4:
                 Close();
-                //*mNavFocus = 0;
                 break;
             default:
                 break;
@@ -302,7 +302,6 @@ namespace TH20 {
                 mScore.RoundDown(10);
             }
 
-            //mNavFocus();
         }
         int CalcSection()
         {
@@ -407,14 +406,6 @@ namespace TH20 {
         Gui::GuiSlider<int32_t, ImGuiDataType_S32> mPriorityY { TH20_STONE_PRIORITY_Y, 0, 1000 };
         Gui::GuiSlider<int32_t, ImGuiDataType_S32> mLevelG { TH20_STONE_LEVEL_G, 1, 5 };
         Gui::GuiSlider<int32_t, ImGuiDataType_S32> mPriorityG { TH20_STONE_PRIORITY_G, 0, 1000 };
-
-        /* Gui::GuiNavFocus mNavFocus { TH_STAGE, TH_MODE, TH_WARP, TH_DLG,
-            TH_MID_STAGE, TH_END_STAGE, TH_NONSPELL, TH_SPELL, TH_PHASE, TH_CHAPTER,
-            TH_SCORE, TH_LIFE, TH_LIFE_FRAGMENT, TH_BOMB, TH_BOMB_FRAGMENT,
-            TH_POWER, TH20_HYPER, TH20_STONE_GAUGE, TH20_STONE_LEVEL_R, TH20_STONE_PRIORITY_R,
-            TH20_STONE_LEVEL_B, TH20_STONE_PRIORITY_B, TH20_STONE_LEVEL_Y, TH20_STONE_PRIORITY_Y,
-            TH20_STONE_LEVEL_G, TH20_STONE_PRIORITY_G
-        };*/
 
         int mChapterSetup[7][2] {
             { 3, 2 },
@@ -680,7 +671,7 @@ namespace TH20 {
 
         virtual void OnPreUpdate() override
         {
-            if (*(THOverlay::singleton().mInternalGauges) && *(DWORD*)(RVA2(0x5B85EC))) {
+            if (*(THOverlay::singleton().mInternalGauges) && *(DWORD*)(RVA(0x1B85EC))) {
                 SetPosRel((1056.0f - 300.0f / 2.0) / 1280.0f, (700.0f - 192.0f / 2.0) / 960.0f);
                 SetSizeRel(300.0f / 1280.0f, 192.0f / 960.0f);
                 Open();
@@ -749,17 +740,10 @@ namespace TH20 {
         }
         void GameplayInit()
         {
-            // th16_all_clear_bonus_1.Setup();
-            // th16_all_clear_bonus_2.Setup();
-            // th16_all_clear_bonus_3.Setup();
         }
         void GameplaySet()
         {
-            // th16_all_clear_bonus_1.Toggle(mOptCtx.all_clear_bonus);
-            // th16_all_clear_bonus_2.Toggle(mOptCtx.all_clear_bonus);
-            // th16_all_clear_bonus_3.Toggle(mOptCtx.all_clear_bonus);
         }
-
 
         // From zero318
         struct ZUNListIter;
@@ -877,10 +861,6 @@ namespace TH20 {
                 EndOptGroup();
             }
             if (BeginOptGroup<TH_GAMEPLAY>()) {
-                DisableKeyOpt();
-                // KeyHUDOpt();
-                // InfLifeOpt();
-
                 if (ImGui::Checkbox(S(TH20_PIV_OVERFLOW_FIX), &pivOverflowFix))
                     th20_piv_overflow_fix.Toggle(pivOverflowFix);
                 ImGui::SameLine();
@@ -1298,6 +1278,9 @@ namespace TH20 {
         ReplaySaveParam(mb_to_utf16(repName, 932).c_str(), thPracParam.GetJson());
     }
 
+    static bool sGameStarted = false;
+    static char* sReplayPath = nullptr;
+
     HOOKSET_DEFINE(THMainHook)
     EHOOK_DY(th20_everlasting_bgm, 0x028710)
     {
@@ -1325,7 +1308,6 @@ namespace TH20 {
         thPracParam.Reset();
     }
 
-    static bool sGameStarted;
     EHOOK_DY(th20_prac_menu_1, 0x12A92A)
     {
         sGameStarted = false;
@@ -1363,33 +1345,6 @@ namespace TH20 {
         *(int*)pCtx->Esp = thPracParam.stage + 1;
     }
     PATCH_DY(th20_instant_esc_r, 0xE59C5, "\xEB", 1);
-    //PATCH_ST(th20_random_crash_fix1, 0x118C0, "\xEB", 1);
-    //PATCH_ST(th20_random_crash_fix2, 0x11900, "\xEB", 1);
-
-    /*
-    EHOOK_DY(th20_prac_menu_3, 0x122FD4)
-    {
-        THGuiPrac::singleton().State(3);
-    }
-    EHOOK_DY(th20_prac_menu_4, 0x123256)
-    {
-        THGuiPrac::singleton().State(4);
-    }
-    */
-    // EHOOK_DY(th20_prac_menu_enter_2, 0x451327)
-    // {
-    //     // Change sub-season to dog days if playing extra
-    //     if (thPracParam.stage == 6) {
-    //         thSubSeasonB = *((int32_t*)0x4a57ac);
-    //         *((int32_t*)0x4a57ac) = 4;
-    //     }
-    // 
-    //     pCtx->Ecx = thPracParam.stage;
-    // }
-    // EHOOK_DY(th20_disable_prac_menu_1, 0x4514d1)
-    // {
-    //     pCtx->Eip = 0x45150e;
-    // }
     EHOOK_DY(th20_patch_main, 0xBCF34)
     {
         if (thPracParam.mode == 1) {
@@ -1427,15 +1382,14 @@ namespace TH20 {
         *(int32_t*)(player_stats + 0x7C) = thPracParam.levelY;
         *(int32_t*)(player_stats + 0x80) = thPracParam.levelG;
     }
-    EHOOK_DY(th20_boss_bgm, 0x0bbfc8)
+    EHOOK_DY(th20_boss_bgm, 0xbbfc8)
     {
         if (THBGMTest()) {
             PushHelper32(pCtx, 1);
-            pCtx->Eip = RVA(0x0bbfcf);
+            pCtx->Eip = RVA(0xbbfcf);
         }
     }
 
-    static char* sReplayPath;
     EHOOK_DY(th20_rep_save, 0x10D813)
     {
         if (sReplayPath) {
@@ -1472,55 +1426,26 @@ namespace TH20 {
         THGuiRep::singleton().Update();
         THOverlay::singleton().Update();
         TH20InternalGauges::singleton().Update();
-        // in case boss movedown do not disabled when playing normal games
-        // {
-        //     if (THAdvOptWnd::singleton().forceBossMoveDown) {
-        //         auto p = ImGui::GetOverlayDrawList();
-        //         auto sz = ImGui::CalcTextSize(S(TH_BOSS_FORCE_MOVE_DOWN));
-        //         p->AddRectFilled({ 120.0f, 0.0f }, { sz.x + 120.0f, sz.y }, 0xFFCCCCCC);
-        //         p->AddText({ 120.0f, 0.0f }, 0xFFFF0000, S(TH_BOSS_FORCE_MOVE_DOWN));
-        //     }
-        // }
-        // if (g_adv_igi_options.show_keyboard_monitor && *(DWORD*)(0x004A6EF8))
-        //     KeysHUD(16, { 1280.0f, 0.0f }, { 840.0f, 0.0f }, g_adv_igi_options.keyboard_style);
         bool drawCursor = THAdvOptWnd::StaticUpdate() || THGuiPrac::singleton().IsOpen();
-        // bool drawCursor = false;
         GameGuiEnd(drawCursor);
     }
-    // EHOOK_DY(th16_player_state, 0x442560)
-    // {
-    //     if (g_adv_igi_options.show_keyboard_monitor)
-    //         RecordKey(16, *(DWORD*)(0x4A52C8));
-    // }
     EHOOK_DY(th20_render, 0x0129C6)
     {
         GameGuiRender(IMPL_WIN32_DX9);
     }
     HOOKSET_ENDDEF()
-    // HOOKSET_DEFINE(THInGameInfo)
-    // EHOOK_DY(th16_game_start, 0x42E5AE) // gamestart-bomb set
-    // {
-    //     TH16InGameInfo::singleton().mBombCount = 0;
-    //     TH16InGameInfo::singleton().mMissCount = 0;
-    //     TH16InGameInfo::singleton().mReleaseCount = 0;
-    // }
-    // EHOOK_DY(th16_bomb_dec, 0x40DB9C) // bomb dec
-    // {
-    //     TH16InGameInfo::singleton().mBombCount++;
-    // }
-    // EHOOK_DY(th16_life_dec, 0x443D3A) // life dec
-    // {
-    //     TH16InGameInfo::singleton().mMissCount++;
-    // }
-    // HOOKSET_ENDDEF()
     HOOKSET_DEFINE(THInitHook)
 
     static __declspec(noinline) void THGuiCreate()
     {
+        if (ImGui::GetCurrentContext())
+            return;
+
         // Init
-        GameGuiInit(IMPL_WIN32_DX9, RVA2(0x5C2D58), RVA2(0x5B47D8), RVA2(0x41D650),
-            Gui::INGAGME_INPUT_GEN2, GetMemContent(RVA2(0x5B6918)) + 0x40, GetMemContent(RVA2(0x5B6918)) + 0x38, 0,
-            -2, *(float*)RVA2(0x5B6898), 0.0f);
+        GameGuiInit(IMPL_WIN32_DX9, RVA(0x1C2D58), RVA(0x1B47D8), RVA2(0x41D650),
+            Gui::INGAGME_INPUT_GEN2, RVA(0x1B6940), RVA(0x1B6938), 0,
+            -2, *(float*)RVA(0x1B6898), 0.0f);
+
 
         // Gui components creation
         THGuiPrac::singleton();
@@ -1530,7 +1455,7 @@ namespace TH20 {
         
         // Hooks
         THMainHook::singleton().EnableAllHooks();
-        Gui::ImplDX9NewFrame();
+        //Gui::ImplDX9NewFrame();
         //  Reset thPracParam
         thPracParam.Reset();
     }
@@ -1540,11 +1465,6 @@ namespace TH20 {
         s.th20_gui_init_1.Disable();
         s.th20_gui_init_2.Disable();
     }
-    //PATCH_DY(th20_disable_demo, 0x44afb0, "\xff\xff\xff\x7f", 4);
-    // EHOOK_DY(th20_disable_mutex, 0x41C3C2)
-    // {
-    //     pCtx->Eip = RVA2(0x41C3DD);
-    // }
     PATCH_DY(th20_startup_1, 0x121A0C, "\xeb", 1);
     PATCH_DY(th20_startup_2, 0x120BF1, "\xeb", 1);
     EHOOK_DY(th20_gui_init_1, 0x12967E)
@@ -1560,13 +1480,9 @@ namespace TH20 {
     HOOKSET_ENDDEF()
 }
 
-bool TH20::THMainHook::sGameStarted = false;
-char* TH20::THMainHook::sReplayPath = nullptr;
-
 void TH20Init()
 {
     ingame_image_base = (uintptr_t)GetModuleHandleW(NULL);
     TH20::THInitHook::singleton().EnableAllHooks();
-    // TryKeepUpRefreshRate((void*)0x45b8da, (void*)0x45b6ad);
 }
 }

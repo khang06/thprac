@@ -590,12 +590,13 @@ static THGameSig gGameDefs[] {
             { 0x1ef2d050, 0xbddd8da2,
                 0x56cedb87, 0xe674cd2c } } },
     { "th20tr",
-        nullptr,//steam id
+        L"3671710", // steam id
         TH20_TITLE,
         CAT_MAIN,
         nullptr,
         L"%APPDATA%\\ShanghaiAlice\\th20",
-        nullptr, L"th20 App",
+        nullptr,
+        L"th20 App",
         "scoreth20.dat",
         TH20Init,
         { 0x67ff22f0, 0x169200,
