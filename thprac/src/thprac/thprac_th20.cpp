@@ -1365,6 +1365,16 @@ namespace TH20 {
         }
         thPracParam._playLock = true;
     }
+    EHOOK_DY(th20_in_practice_1, 0xbd736) // demo only - end-of-stage gamemode conditional jump skip
+    {
+        if (thPracParam.mode == 1)
+            pCtx->Eip = RVA(0xbd73c);
+    }
+    EHOOK_DY(th20_in_practice_2, 0x8bedc) // demo only - practice mode check always returns 1
+    {
+        if (thPracParam.mode == 1)
+            pCtx->Eip = RVA(0x8bee2);
+    }
     EHOOK_DY(th20_patch_stones, 0x133A21)
     {
         if (thPracParam.mode != 1)
