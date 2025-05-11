@@ -64,6 +64,8 @@ namespace TH20 {
 
             GetJsonValue(hyper);
             GetJsonValue(stone);
+            GetJsonValue(stoneMax)
+            else stoneMax = -1; // not needed for full release
             GetJsonValue(levelR);
             GetJsonValue(priorityR);
             GetJsonValue(levelB);
@@ -101,6 +103,7 @@ namespace TH20 {
 
                 AddJsonValue(hyper);
                 AddJsonValue(stone);
+                AddJsonValue(stoneMax);
                 AddJsonValue(levelR);
                 AddJsonValue(priorityR);
                 AddJsonValue(levelB);
@@ -1382,13 +1385,17 @@ namespace TH20 {
 
         uintptr_t player_stats = RVA(0x1B8670);
         *(int32_t*)(player_stats + 0x4C) = (int32_t)(thPracParam.hyper * *(int32_t*)(player_stats + 0x50));
-        if ((int32_t)thPracParam.hyper == 1) { //call the hyper start method
+        if ((int32_t)thPracParam.hyper == 1) { // call the hyper start method
             int32_t* gauge_manager_ptr = (int32_t*)RVA(0x1b8614);
             asm_call_rel<0x134fe0, Fastcall>(*gauge_manager_ptr);
         }
 
-        *(int32_t*)(player_stats + 0x5C) = (int32_t)(thPracParam.stone * thPracParam.stoneMax);
-        *(int32_t*)(player_stats + 0x60) = thPracParam.stoneMax;
+        if (thPracParam.stoneMax == -1) // for backwards compatibility with early FW demo thprac replays. not needed for full release
+            *(int32_t*)(player_stats + 0x5C) = (int32_t)(thPracParam.stone * *(int32_t*)(player_stats + 0x60));
+        else {
+            *(int32_t*)(player_stats + 0x5C) = (int32_t)(thPracParam.stone * thPracParam.stoneMax);
+            *(int32_t*)(player_stats + 0x60) = thPracParam.stoneMax;
+        }
         *(int32_t*)(player_stats + 0x64) = thPracParam.priorityR;
         *(int32_t*)(player_stats + 0x68) = thPracParam.priorityB;
         *(int32_t*)(player_stats + 0x6C) = thPracParam.priorityY;
