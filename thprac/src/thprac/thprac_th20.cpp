@@ -1368,12 +1368,12 @@ namespace TH20 {
         }
         thPracParam._playLock = true;
     }
-    EHOOK_DY(th20_stage_end_praclike, 0xbd736) // demo only - end-of-stage gamemode non-zero conditional jump skip
+    EHOOK_DY(th20_stage_end_praclike_1, 0xbd736) // demo only - end-of-stage gamemode non-zero conditional jump skip
     {
         if (thPracParam.mode == 1)
             pCtx->Eip = RVA(0xbd73c);
     }
-    EHOOK_DY(th20_stage_end_praclike, 0xe8b28) // demo only - end-of-stage gamemode =2 conditional jump skip
+    EHOOK_DY(th20_stage_end_praclike_2, 0xe8b28) // demo only - end-of-stage gamemode =2 conditional jump skip
     {
         if (thPracParam.mode == 1)
             pCtx->Eip = RVA(0xe8b2a);
