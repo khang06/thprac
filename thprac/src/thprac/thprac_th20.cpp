@@ -405,7 +405,7 @@ namespace TH20 {
 
         Gui::GuiSlider<int, ImGuiDataType_S32> mHyper { TH20_HYPER, 0, 10000, 1, 1000 };
         Gui::GuiSlider<int, ImGuiDataType_S32> mStone { TH20_STONE_GAUGE, 0, 10000, 1, 1000 };
-        Gui::GuiSlider<int, ImGuiDataType_S32> mStoneMax { TH20_STONE_GAUGE_MAX, 0, 5000, 1, 100 };
+        Gui::GuiSlider<int, ImGuiDataType_S32> mStoneMax { TH20_STONE_GAUGE_MAX, 0, 5000, 100, 100 };
         Gui::GuiSlider<int32_t, ImGuiDataType_S32> mLevelR { TH20_STONE_LEVEL_R, 0, 5 };
         Gui::GuiSlider<int32_t, ImGuiDataType_S32> mPriorityR { TH20_STONE_PRIORITY_R, 0, 1000 };
         Gui::GuiSlider<int32_t, ImGuiDataType_S32> mLevelB { TH20_STONE_LEVEL_B, 0, 5 };
@@ -709,7 +709,7 @@ namespace TH20 {
         PATCH_ST(th20_piv_uncap_2, 0xB9316, "\x89\xD0\x0F\x1F\x00", 5);
         PATCH_ST(th20_score_uncap, 0xE3E72, "\xEB", 1);
         PATCH_ST(th20_infinite_stones, 0x11A250, "\xEB", 1);
-        PATCH_ST(th20_hitbox_scale_fix, 0x1B8758, "\x64", 1);
+        PATCH_ST(th20_hitbox_scale_fix, 0x102280, "\xB8\x64\x00\x00\x00\xC3", 6);
         PATCH_ST(th20_bullet_hitbox_fix_1, 0x3E7F2, "\xF3\x0F\x10\x80\x80\x00\x00\x00\xF3\x0F\x5C\x42\x24", 13);
         PATCH_ST(th20_bullet_hitbox_fix_2, 0x3E80A, "\xF3\x0F\x10\x82\x84\x00\x00\x00\xF3\x0F\x5C\x41\x28", 13);
 
@@ -1062,17 +1062,20 @@ namespace TH20 {
         constexpr unsigned int st1BossCreateCall = 0x8680;
         constexpr unsigned int st1bsPrePushSpellID = 0x3b8;
         constexpr unsigned int st1bsPostNotSpellPracCheck = 0x4a0;
+        constexpr unsigned int st1bsSpellHealthVal = 0x4b0;
         constexpr unsigned int st1bsSpellSubCallOrd = 0x4d0;
 
         constexpr unsigned int st2BossCreateCall = 0xabf0;
         constexpr unsigned int st2bsPrePushSpellID = 0x3d0;
         constexpr unsigned int st2bsPostNotSpellPracCheck = 0x4b8;
+        constexpr unsigned int st2bsSpellHealthVal = 0x4c8;
         constexpr unsigned int st2bsSpellSubCallOrd = 0x4e8;
         constexpr unsigned int st2bsNonSubCallOrd = 0x628;
 
         constexpr unsigned int st3BossCreateCall = 0xbaa0;
         constexpr unsigned int st3bsPrePushSpellID = 0x458;
         constexpr unsigned int st3bsPostNotSpellPracCheck = 0x540;
+        constexpr unsigned int st3bsSpellHealthVal = 0x550;
         constexpr unsigned int st3bsSpellSubCallOrd = 0x570;
         constexpr unsigned int st3bsNonSubCallOrd = 0x6d0;
 
@@ -1122,6 +1125,7 @@ namespace TH20 {
             ECLJump(ecl, st1PostMaple + stdInterruptSize, st1BossCreateCall, 60);
             ecl.SetFile(2);
             ECLJump(ecl, st1bsPrePushSpellID, st1bsPostNotSpellPracCheck, 1); // Utilize Spell Practice Jump
+            ecl << pair { st1bsSpellHealthVal, 2000 }; // Set correct health (set in skipped non)
             ecl << pair { st1bsSpellSubCallOrd, (int8_t)0x32 }; // Set spell ID in sub call to '2'
             break;
         }
@@ -1130,6 +1134,7 @@ namespace TH20 {
             ECLJump(ecl, st1PostMaple + stdInterruptSize, st1BossCreateCall, 60);
             ecl.SetFile(2);
             ECLJump(ecl, st1bsPrePushSpellID, st1bsPostNotSpellPracCheck, 1); // Utilize Spell Practice Jump
+            ecl << pair { st1bsSpellHealthVal, 2500 }; // Set correct health (set in skipped non)
             ecl << pair { st1bsSpellSubCallOrd, (int8_t)0x33 }; // Set spell ID in sub call to '3'
             break;
         }
@@ -1176,6 +1181,7 @@ namespace TH20 {
             ECLJump(ecl, st2PostMaple + stdInterruptSize, st2BossCreateCall, 60);
             ecl.SetFile(2);
             ECLJump(ecl, st2bsPrePushSpellID, st2bsPostNotSpellPracCheck, 1); // Utilize Spell Practice Jump
+            ecl << pair { st2bsSpellHealthVal, 2800 }; // Set correct health (set in skipped non)
             ecl << pair { st2bsSpellSubCallOrd, (int8_t)0x32 }; // Set spell ID in sub call to '2'
             break;
         }
@@ -1184,6 +1190,7 @@ namespace TH20 {
             ECLJump(ecl, st2PostMaple + stdInterruptSize, st2BossCreateCall, 60);
             ecl.SetFile(2);
             ECLJump(ecl, st2bsPrePushSpellID, st2bsPostNotSpellPracCheck, 1); // Utilize Spell Practice Jump
+            ecl << pair { st2bsSpellHealthVal, 3000 }; // Set correct health (set in skipped non)
             ecl << pair { st2bsSpellSubCallOrd, (int8_t)0x33 }; // Set spell ID in sub call to '3'
             break;
         }
@@ -1226,6 +1233,7 @@ namespace TH20 {
             ECLJump(ecl, st3PostMaple + stdInterruptSize, st3BossCreateCall, 60);
             ecl.SetFile(2);
             ECLJump(ecl, st3bsPrePushSpellID, st3bsPostNotSpellPracCheck, 1); // Utilize Spell Practice Jump
+            ecl << pair { st3bsSpellHealthVal, 3400 }; // Set correct health (set in skipped non)
             ecl << pair { st3bsSpellSubCallOrd, (int8_t)0x32 }; // Set spell ID in sub call to '2'
             break;
         }
@@ -1251,6 +1259,7 @@ namespace TH20 {
             ECLJump(ecl, st3PostMaple + stdInterruptSize, st3BossCreateCall, 60);
             ecl.SetFile(2);
             ECLJump(ecl, st3bsPrePushSpellID, st3bsPostNotSpellPracCheck, 1); // Utilize Spell Practice Jump
+            ecl << pair { st3bsSpellHealthVal, 4000 }; // Set correct health (set in skipped non)
             ecl << pair { st3bsSpellSubCallOrd, (int8_t)0x33 }; // Set spell ID in sub call to '3'
             break;
         }
@@ -1259,6 +1268,7 @@ namespace TH20 {
             ECLJump(ecl, st3PostMaple + stdInterruptSize, st3BossCreateCall, 60);
             ecl.SetFile(2);
             ECLJump(ecl, st3bsPrePushSpellID, st3bsPostNotSpellPracCheck, 1); // Utilize Spell Practice Jump
+            ecl << pair { st3bsSpellHealthVal, 4000 }; // Set correct health (set in skipped non)
             ecl << pair { st3bsSpellSubCallOrd, (int8_t)0x34 }; // Set spell ID in sub call to '4'
             break;
         }

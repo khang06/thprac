@@ -1962,7 +1962,7 @@ public:
         }
 
         if (currentGame->signature.idStr != "th20tr") {
-            MessageBoxA(nullptr, S(TH20TR_OTHER_GAME_WARN), S(THPRAC_PR_ERROR), MB_OK | MB_ICONERROR | MB_SYSTEMMODAL);
+            MessageBoxW(nullptr, utf8_to_utf16(S(TH20TR_OTHER_GAME_WARN)).c_str(), utf8_to_utf16(S(THPRAC_PR_ERROR)).c_str(), MB_OK | MB_ICONERROR | MB_SYSTEMMODAL);
             // return 0;
         }
 
