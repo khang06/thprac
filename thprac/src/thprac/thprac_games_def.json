@@ -10141,7 +10141,8 @@
         "将你的判定点从当前的0%（点状极小）恢复为100%（原始大小）。",
         "Makes your hitbox 100% scale (original size) instead of 0% (current size, point-like).",
         " 現在の0%（点のように小さい）から100%（本来のサイズ）に戻します。"
-      ]
+      ],
+      "TH20_FIX_BULLET_OFFSET": [ "修复子弹命中框偏移", "Fix bullet hitbox offset", "弾丸のヒットボックスのオフセットを修正" ]
     },
 
     "sections": {

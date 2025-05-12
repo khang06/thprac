@@ -710,6 +710,8 @@ namespace TH20 {
         PATCH_ST(th20_score_uncap, 0xE3E72, "\xEB", 1);
         PATCH_ST(th20_infinite_stones, 0x11A250, "\xEB", 1);
         PATCH_ST(th20_hitbox_scale_fix, 0x1B8758, "\x64", 1);
+        PATCH_ST(th20_bullet_hitbox_fix_1, 0x3E7F2, "\xF3\x0F\x10\x80\x80\x00\x00\x00\xF3\x0F\x5C\x42\x24", 13);
+        PATCH_ST(th20_bullet_hitbox_fix_2, 0x3E80A, "\xF3\x0F\x10\x82\x84\x00\x00\x00\xF3\x0F\x5C\x41\x28", 13);
 
     public:
 
@@ -721,6 +723,7 @@ namespace TH20 {
         bool scoreUncap = false;
         bool infiniteStones = false;
         bool plHitboxScaleFix = false;
+        bool bulletHitboxFix = false;
         HookCtx* listIterUnlinkFix = nullptr;
 
         void MasterDisableInit()
@@ -803,6 +806,8 @@ namespace TH20 {
             th20_score_uncap.Setup();
             th20_infinite_stones.Setup();
             th20_hitbox_scale_fix.Setup();
+            th20_bullet_hitbox_fix_1.Setup();
+            th20_bullet_hitbox_fix_2.Setup();
 
             // thcrap base_tsa already patches this to fix the crash, don't try to rehook it if it's being used
             if (*(uint32_t*)RVA(0x11AD0) == 0x51EC8B55) {
@@ -889,6 +894,11 @@ namespace TH20 {
                     th20_hitbox_scale_fix.Toggle(plHitboxScaleFix);
                 ImGui::SameLine();
                 HelpMarker(S(TH20_FIX_HITBOX_DESC));
+                ImGui::SameLine();
+                if (ImGui::Checkbox(S(TH20_FIX_BULLET_OFFSET), &bulletHitboxFix)) {
+                    th20_bullet_hitbox_fix_1.Toggle(bulletHitboxFix);
+                    th20_bullet_hitbox_fix_2.Toggle(bulletHitboxFix);
+                }
 
                 ImGui::SetNextItemWidth(180.0f);
                 EndOptGroup();
