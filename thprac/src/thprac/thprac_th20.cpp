@@ -1468,6 +1468,7 @@ namespace TH20 {
         if (*(uint32_t*)(*(uintptr_t*)(RVA(0x1B85E8) + 0x88 + 0x238) + 0x108))
             memcpy((void*)(RVA(0x1B85E8) + 0x88 + 0x1C), replayStones, sizeof(replayStones));
     }
+    PATCH_DY(th20_fix_rep_results_skip, 0x1133B1, "\x5B\x35\xFA\xFF", 4);
 
     EHOOK_DY(th20_update, 0x012824)
     {
