@@ -1465,8 +1465,14 @@ namespace TH20 {
 
     EHOOK_DY(th20_fix_rep_stone_init, 0xBC3D0)
     {
-        if (*(uint32_t*)(*(uintptr_t*)(RVA(0x1B85E8) + 0x88 + 0x238) + 0x108))
-            memcpy((void*)(RVA(0x1B85E8) + 0x88 + 0x1C), replayStones, sizeof(replayStones));
+        if (*(uint32_t*)(*(uintptr_t*)(RVA(0x1B85E8) + 0x88 + 0x238) + 0x108)) {
+            // Yes, the order really is swapped like this
+            auto selected = (uint32_t*)(RVA(0x1B85E8) + 0x88 + 0x1C);
+            selected[0] = replayStones[0];
+            selected[1] = replayStones[2];
+            selected[2] = replayStones[1];
+            selected[3] = replayStones[3];
+        }
     }
     PATCH_DY(th20_fix_rep_results_skip, 0x1133B1, "\x5B\x35\xFA\xFF", 4);
 
