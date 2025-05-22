@@ -122,6 +122,7 @@ namespace TH20 {
         }
     };
     THPracParam thPracParam {};
+    uint32_t replayStones[4] {};
 
     class THGuiPrac : public Gui::GameGuiWnd {
         THGuiPrac() noexcept
@@ -446,6 +447,9 @@ namespace TH20 {
                 mParamStatus = true;
             else
                 mRepParam.Reset();
+
+            uint32_t* savedStones = (uint32_t*)GetMemAddr(RVA(0x1C3DB4), index * 4 + 0x573C, 0x1C, 0xDC);
+            memcpy(replayStones, savedStones, sizeof(replayStones));
         }
 
         bool mRepStatus = false;
@@ -1457,6 +1461,12 @@ namespace TH20 {
     EHOOK_DY(th20_rep_menu_3, 0x1254DE)
     {
         THGuiRep::singleton().State(3);
+    }
+
+    EHOOK_DY(th20_fix_rep_stone_init, 0xBC3D0)
+    {
+        if (*(uint32_t*)(*(uintptr_t*)(RVA(0x1B85E8) + 0x88 + 0x238) + 0x108))
+            memcpy((void*)(RVA(0x1B85E8) + 0x88 + 0x1C), replayStones, sizeof(replayStones));
     }
 
     EHOOK_DY(th20_update, 0x012824)
